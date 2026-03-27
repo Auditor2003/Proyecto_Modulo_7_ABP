@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 
 class Moneda(models.Model):
@@ -45,6 +46,19 @@ class Transaccion(models.Model):
 
     importe = models.DecimalField(max_digits=15, decimal_places=2)
     fecha_transaccion = models.DateTimeField(auto_now_add=True)
+
+    def clean(self):
+        # ❌ No puede transferirse a sí mismo
+        if self.id_usuario_emisor == self.id_usuario_receptor:
+            raise ValidationError("El usuario no puede transferirse a sí mismo.")
+
+        # ❌ El monto debe ser mayor a 0
+        if self.importe <= 0:
+            raise ValidationError("El importe debe ser mayor que 0.")
+
+    def save(self, *args, **kwargs):
+        self.clean()  # Ejecuta validaciones antes de guardar
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.id_usuario_emisor} -> {self.id_usuario_receptor} : {self.importe}"
