@@ -1,6 +1,7 @@
 from django.views.generic import ListView, CreateView
 from django.urls import reverse_lazy
 from .models import Usuario
+from .forms import UsuarioForm
 
 
 class UsuarioListView(ListView):
@@ -14,8 +15,8 @@ class UsuarioListView(ListView):
 class UsuarioCreateView(CreateView):
     model = Usuario
     template_name = 'gestion/usuario_form.html'
-    fields = ['nombre', 'correo_electronico', 'contrasena']
+    form_class = UsuarioForm
     success_url = reverse_lazy('usuario_list')
 
-    # Aquí defino solo los campos que el usuario debería ingresar
-    # Excluyo saldo porque se maneja internamente en el sistema
+    # Aquí uso un formulario personalizado en lugar de fields
+    # Esto me permite agregar validaciones como confirmación de contraseña
