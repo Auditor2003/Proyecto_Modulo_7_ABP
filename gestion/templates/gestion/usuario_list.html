@@ -17,8 +17,11 @@
             <li>
                 {{ usuario.nombre }} - {{ usuario.correo_electronico }} - Saldo: {{ usuario.saldo }}
 
-                <!-- Aquí agrego el botón para editar -->
+                <!-- Botón editar -->
                 <a href="{% url 'usuario_update' usuario.pk %}">Editar</a>
+
+                <!-- Botón eliminar -->
+                <a href="{% url 'usuario_delete' usuario.pk %}">Eliminar</a>
             </li>
         {% empty %}
             <li>No hay usuarios registrados.</li>
