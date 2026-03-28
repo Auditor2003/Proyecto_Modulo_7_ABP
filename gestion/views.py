@@ -9,15 +9,13 @@ class UsuarioListView(ListView):
     context_object_name = 'usuarios'
 
     # Aquí estoy mostrando todos los usuarios en una lista simple
-    # Uso context_object_name para poder recorrerlos fácil en el template
 
 
 class UsuarioCreateView(CreateView):
     model = Usuario
     template_name = 'gestion/usuario_form.html'
-    fields = ['nombre', 'correo_electronico', 'contrasena', 'saldo']
+    fields = ['nombre', 'correo_electronico', 'contrasena']
     success_url = reverse_lazy('usuario_list')
 
-    # Aquí estoy creando un formulario automático con los campos del modelo
-    # Cuando el usuario envía el formulario, se guarda en la BD
-    # Después redirijo a la lista de usuarios
+    # Aquí defino solo los campos que el usuario debería ingresar
+    # Excluyo saldo porque se maneja internamente en el sistema
