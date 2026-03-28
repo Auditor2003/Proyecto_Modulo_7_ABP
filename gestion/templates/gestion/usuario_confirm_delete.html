@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Eliminar Usuario</title>
+</head>
+<body>
+
+    <h1>Eliminar Usuario</h1>
+
+    <!-- Aquí muestro qué usuario se va a eliminar -->
+    <p>¿Estás seguro que deseas eliminar a <strong>{{ object.nombre }}</strong>?</p>
+
+    <!-- Formulario de confirmación -->
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sí, eliminar</button>
+    </form>
+
+    <br>
+
+    <!-- Opción para cancelar -->
+    <a href="{% url 'usuario_list' %}">Cancelar</a>
+
+</body>
+</html>
