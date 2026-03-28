@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Usuario
 from .forms import UsuarioForm
@@ -9,7 +9,7 @@ class UsuarioListView(ListView):
     template_name = 'gestion/usuario_list.html'
     context_object_name = 'usuarios'
 
-    # Aquí estoy mostrando todos los usuarios en una lista simple
+    # Aquí muestro todos los usuarios
 
 
 class UsuarioCreateView(CreateView):
@@ -18,7 +18,7 @@ class UsuarioCreateView(CreateView):
     form_class = UsuarioForm
     success_url = reverse_lazy('usuario_list')
 
-    # Aquí uso un formulario personalizado con validaciones
+    # Aquí creo usuarios con validación personalizada
 
 
 class UsuarioUpdateView(UpdateView):
@@ -27,5 +27,12 @@ class UsuarioUpdateView(UpdateView):
     form_class = UsuarioForm
     success_url = reverse_lazy('usuario_list')
 
-    # Aquí reutilizo el mismo formulario para editar usuarios
-    # Django carga automáticamente los datos actuales del usuario
+    # Aquí edito usuarios reutilizando el mismo formulario
+
+
+class UsuarioDeleteView(DeleteView):
+    model = Usuario
+    template_name = 'gestion/usuario_confirm_delete.html'
+    success_url = reverse_lazy('usuario_list')
+
+    # Aquí elimino un usuario con confirmación previa
