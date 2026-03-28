@@ -11,4 +11,3 @@ urlpatterns = [
     # Aquí agrego la edición de usuario (uso el id del usuario)
     path('usuarios/editar/<int:pk>/', UsuarioUpdateView.as_view(), name='usuario_update'),
 ]
-]
