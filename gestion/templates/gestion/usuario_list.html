@@ -7,7 +7,7 @@
 
     <h1>Usuarios</h1>
 
-    <!-- Aquí agrego un link para crear un nuevo usuario -->
+    <!-- Aquí dejo un enlace para crear un nuevo usuario -->
     <a href="{% url 'usuario_create' %}">Crear nuevo usuario</a>
 
     <br><br>
@@ -16,6 +16,9 @@
         {% for usuario in usuarios %}
             <li>
                 {{ usuario.nombre }} - {{ usuario.correo_electronico }} - Saldo: {{ usuario.saldo }}
+
+                <!-- Aquí agrego el botón para editar -->
+                <a href="{% url 'usuario_update' usuario.pk %}">Editar</a>
             </li>
         {% empty %}
             <li>No hay usuarios registrados.</li>
