@@ -1,13 +1,21 @@
 from django.urls import path
-from .views import UsuarioListView, UsuarioCreateView, UsuarioUpdateView
+from .views import (
+    UsuarioListView,
+    UsuarioCreateView,
+    UsuarioUpdateView,
+    UsuarioDeleteView
+)
 
 urlpatterns = [
-    # Aquí dejo la lista de usuarios
+    # Lista de usuarios
     path('usuarios/', UsuarioListView.as_view(), name='usuario_list'),
 
-    # Aquí dejo la creación de usuarios
+    # Crear usuario
     path('usuarios/crear/', UsuarioCreateView.as_view(), name='usuario_create'),
 
-    # Aquí agrego la edición de usuario (uso el id del usuario)
+    # Editar usuario
     path('usuarios/editar/<int:pk>/', UsuarioUpdateView.as_view(), name='usuario_update'),
+
+    # Eliminar usuario
+    path('usuarios/eliminar/<int:pk>/', UsuarioDeleteView.as_view(), name='usuario_delete'),
 ]
