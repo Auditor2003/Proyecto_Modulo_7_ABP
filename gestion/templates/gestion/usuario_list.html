@@ -7,6 +7,11 @@
 
     <h1>Usuarios</h1>
 
+    <!-- Aquí agrego un link para crear un nuevo usuario -->
+    <a href="{% url 'usuario_create' %}">Crear nuevo usuario</a>
+
+    <br><br>
+
     <ul>
         {% for usuario in usuarios %}
             <li>
