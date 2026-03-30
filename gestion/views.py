@@ -1,64 +1,91 @@
-from django.shortcuts import render, redirect
-from django.views import View
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 from django.contrib import messages
 from django.db import transaction
 
-from .models import Transaccion, Usuario
-from .forms import TransaccionForm
+from .models import Usuario, Transaccion, Moneda
+from .forms import UsuarioForm, TransaccionForm
 
 
-class CrearTransaccionView(View):
+# CRUD USUARIO
 
-    def get(self, request):
-        # Yo muestro el formulario vacío
-        formulario = TransaccionForm()
-        return render(request, 'transacciones/crear.html', {'formulario': formulario})
+class UsuarioListView(ListView):
+    model = Usuario
+    template_name = 'gestion/usuario_list.html'
+    context_object_name = 'usuarios'
 
-    def post(self, request):
-        # Yo recibo los datos del formulario
-        formulario = TransaccionForm(request.POST)
+    # Muestro todos los usuarios
 
-        if formulario.is_valid():
-            # Yo obtengo los datos validados
-            emisor = formulario.cleaned_data['emisor']
-            receptor = formulario.cleaned_data['receptor']
-            monto = formulario.cleaned_data['monto']
 
-            # Yo valido que no sea el mismo usuario
-            if emisor == receptor:
-                messages.error(request, "No puedes transferirte a ti mismo.")
-                return render(request, 'transacciones/crear.html', {'formulario': formulario})
+class UsuarioCreateView(CreateView):
+    model = Usuario
+    template_name = 'gestion/usuario_form.html'
+    form_class = UsuarioForm
+    success_url = reverse_lazy('usuario_list')
 
-            # Yo valido saldo suficiente
-            if emisor.saldo < monto:
-                messages.error(request, "Saldo insuficiente.")
-                return render(request, 'transacciones/crear.html', {'formulario': formulario})
+    # Creo usuarios con validación personalizada
 
-            try:
-                # Yo aseguro que todo ocurra correctamente o nada ocurra
-                with transaction.atomic():
 
-                    # Yo descuento saldo al emisor
-                    emisor.saldo -= monto
-                    emisor.save()
+class UsuarioUpdateView(UpdateView):
+    model = Usuario
+    template_name = 'gestion/usuario_form.html'
+    form_class = UsuarioForm
+    success_url = reverse_lazy('usuario_list')
 
-                    # Yo sumo saldo al receptor
-                    receptor.saldo += monto
-                    receptor.save()
+    # Edito usuarios reutilizando el mismo formulario
 
-                    # Yo registro la transacción
-                    Transaccion.objects.create(
-                        emisor=emisor,
-                        receptor=receptor,
-                        monto=monto
-                    )
 
-                messages.success(request, "Transacción realizada correctamente.")
-                return redirect('lista_transacciones')
+class UsuarioDeleteView(DeleteView):
+    model = Usuario
+    template_name = 'gestion/usuario_confirm_delete.html'
+    success_url = reverse_lazy('usuario_list')
 
-            except Exception as e:
-                # Yo capturo errores inesperados
-                messages.error(request, f"Error al procesar la transacción: {str(e)}")
+    # Elimino un usuario con confirmación previa
 
-        # Yo retorno el formulario con errores
-        return render(request, 'transacciones/crear.html', {'formulario': formulario})
+
+# CREATE TRANSACCION
+
+class TransaccionCreateView(CreateView):
+    model = Transaccion
+    form_class = TransaccionForm
+    template_name = 'gestion/transaccion_form.html'
+    success_url = reverse_lazy('transaccion_list')
+
+    # Sobrescribo form_valid para aplicar lógica de negocio
+    def form_valid(self, form):
+
+        emisor = form.cleaned_data['id_usuario_emisor']
+        receptor = form.cleaned_data['id_usuario_receptor']
+        importe = form.cleaned_data['importe']
+        moneda = form.cleaned_data['currency_id']
+
+        # Valido que no sea el mismo usuario
+        if emisor == receptor:
+            messages.error(self.request, "No puedes transferirte a ti mismo.")
+            return self.form_invalid(form)
+
+        # Valido saldo suficiente
+        if emisor.saldo < importe:
+            messages.error(self.request, "Saldo insuficiente.")
+            return self.form_invalid(form)
+
+        try:
+            with transaction.atomic():
+
+                # Descuento saldo al emisor
+                emisor.saldo -= importe
+                emisor.save()
+
+                # Sumo saldo al receptor
+                receptor.saldo += importe
+                receptor.save()
+
+                # Guardo la transaccion
+                response = super().form_valid(form)
+
+            messages.success(self.request, "Transacción realizada correctamente.")
+            return response
+
+        except Exception as e:
+            messages.error(self.request, f"Error al procesar la transacción: {str(e)}")
+            return self.form_invalid(form)
