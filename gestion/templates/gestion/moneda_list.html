@@ -7,20 +7,28 @@
 
 <h1>Listado de Monedas</h1>
 
+<!-- Link para crear nueva moneda -->
 <a href="{% url 'moneda_create' %}">Nueva Moneda</a>
 
 <ul>
     {% for m in monedas %}
         <li>
             {{ m.nombre_moneda }} ({{ m.simbolo }})
+
+            <!-- Editar -->
             <a href="{% url 'moneda_update' m.pk %}">Editar</a>
+
+            <!-- Eliminar -->
             <a href="{% url 'moneda_delete' m.pk %}">Eliminar</a>
         </li>
     {% empty %}
-        <li>No hay monedas</li>
+        <li>No hay monedas registradas</li>
     {% endfor %}
 </ul>
 
+<br>
+
+<!-- Volver -->
 <a href="{% url 'usuario_list' %}">Volver</a>
 
 </body>
