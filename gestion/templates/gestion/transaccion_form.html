@@ -8,14 +8,12 @@
 
     <h1>Crear Transacción</h1>
 
-    <!-- Mensajes del sistema -->
     {% if messages %}
         {% for message in messages %}
             <p>{{ message }}</p>
         {% endfor %}
     {% endif %}
 
-    <!-- Formulario -->
     <form method="post">
         {% csrf_token %}
 
@@ -25,8 +23,8 @@
         </p>
 
         <p>
-            <label>Receptor:</label><br>
-            {{ form.id_usuario_receptor }}
+            <label>Beneficiario:</label><br>
+            {{ form.id_beneficiario }}
         </p>
 
         <p>
