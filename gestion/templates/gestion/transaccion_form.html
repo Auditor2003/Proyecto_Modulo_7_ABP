@@ -1,10 +1,12 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
 <html lang="es">
-<head>
+
     <meta charset="UTF-8">
     <title>Crear Transacción</title>
-</head>
-<body>
+
+
 
     <h1>Crear Transacción</h1>
 
@@ -43,5 +45,4 @@
     <br>
     <a href="{% url 'transaccion_list' %}">Volver</a>
 
-</body>
-</html>
+{% endblock %}

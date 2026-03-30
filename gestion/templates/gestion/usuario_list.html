@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Lista de Usuarios</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
+<title>Lista de Usuarios</title>
+
+
 
     <h1>Usuarios</h1>
 
@@ -28,5 +28,4 @@
         {% endfor %}
     </ul>
 
-</body>
-</html>
+{% endblock %}

@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Crear Usuario</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
+<title>Crear Usuario</title>
+
+
 
     <h1>Crear Usuario</h1>
 
@@ -22,5 +22,4 @@
     <!-- Aquí dejo un enlace para volver a la lista -->
     <a href="{% url 'usuario_list' %}">Volver a la lista</a>
 
-</body>
-</html>
+{% endblock %}

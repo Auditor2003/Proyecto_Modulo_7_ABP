@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Monedas</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
+<title>Monedas</title>
+
+
 
 <h1>Listado de Monedas</h1>
 
@@ -31,5 +31,4 @@
 <!-- Volver -->
 <a href="{% url 'usuario_list' %}">Volver</a>
 
-</body>
-</html>
+{% endblock %}

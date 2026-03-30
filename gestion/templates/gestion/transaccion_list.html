@@ -1,6 +1,8 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
 <html lang="es">
-<head>
+
     <meta charset="UTF-8">
     <title>Transacciones</title>
 
@@ -58,8 +60,8 @@
             color: gray;
         }
     </style>
-</head>
-<body>
+
+
 
     <h1>Listado de Transacciones</h1>
 
@@ -95,5 +97,4 @@
     <br><br>
     <a href="{% url 'usuario_list' %}">← Volver a usuarios</a>
 
-</body>
-</html>
+{% endblock %}

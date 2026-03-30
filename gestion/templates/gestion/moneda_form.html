@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Moneda</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
+<title>Moneda</title>
+
+
 
 <h1>Formulario Moneda</h1>
 
@@ -15,5 +15,4 @@
 
 <a href="{% url 'moneda_list' %}">Volver</a>
 
-</body>
-</html>
+{% endblock %}
