@@ -1,16 +1,5 @@
 from django.urls import path
-from .views import (
-    UsuarioListView,
-    UsuarioCreateView,
-    UsuarioUpdateView,
-    UsuarioDeleteView,
-    MonedaListView,
-    MonedaCreateView,
-    MonedaUpdateView,
-    MonedaDeleteView,
-    TransaccionCreateView,
-    TransaccionListView
-)
+from .views import *
 
 urlpatterns = [
     path('', UsuarioListView.as_view(), name='usuario_list'),
@@ -25,4 +14,7 @@ urlpatterns = [
 
     path('transaccion/', TransaccionListView.as_view(), name='transaccion_list'),
     path('transaccion/crear/', TransaccionCreateView.as_view(), name='transaccion_create'),
+
+    # Ruta para crear beneficiarios desde el flujo
+    path('beneficiario/crear/', BeneficiarioCreateView.as_view(), name='beneficiario_create'),
 ]

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Estoy creando un beneficiario sin necesidad de login -->
+
+<h1>Crear Beneficiario</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit">Guardar</button>
+</form>
+
+<a href="{% url 'transaccion_create' %}">Volver</a>
+
+{% endblock %}

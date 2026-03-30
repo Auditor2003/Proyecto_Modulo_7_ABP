@@ -2,7 +2,11 @@ from django import forms
 from .models import Usuario, Transaccion, Beneficiario
 
 
+# FORM USUARIO
+
+
 class UsuarioForm(forms.ModelForm):
+    # Agrego campo para confirmar contraseña
     confirmar_contrasena = forms.CharField(
         widget=forms.PasswordInput,
         label="Confirmar contraseña"
@@ -12,11 +16,13 @@ class UsuarioForm(forms.ModelForm):
         model = Usuario
         fields = ['nombre', 'correo_electronico', 'contrasena']
 
+        # Oculto la contraseña en el input
         widgets = {
             'contrasena': forms.PasswordInput(),
         }
 
     def clean(self):
+        # Obtengo los datos del formulario
         cleaned_data = super().clean()
         contrasena = cleaned_data.get("contrasena")
         confirmar = cleaned_data.get("confirmar_contrasena")
@@ -32,6 +38,19 @@ class UsuarioForm(forms.ModelForm):
         return cleaned_data
 
 
+# FORM BENEFICIARIO
+
+class BeneficiarioForm(forms.ModelForm):
+    class Meta:
+        model = Beneficiario
+        fields = ['nombre', 'detalle']
+
+    # Uso este formulario para crear beneficiarios sin login
+
+
+# FORM TRANSACCION
+
+
 class TransaccionForm(forms.ModelForm):
 
     class Meta:
@@ -44,12 +63,13 @@ class TransaccionForm(forms.ModelForm):
         ]
 
     def clean(self):
+        # Obtengo los datos del formulario
         cleaned_data = super().clean()
 
         emisor = cleaned_data.get('id_usuario_emisor')
         importe = cleaned_data.get('importe')
 
-        # Valido que el importe sea mayor a 0
+        # Valido que el monto sea mayor a 0
         if importe and importe <= 0:
             raise forms.ValidationError("El importe debe ser mayor a 0.")
 
