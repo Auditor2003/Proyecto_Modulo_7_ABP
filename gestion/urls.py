@@ -4,16 +4,16 @@ from .views import (
     UsuarioCreateView,
     UsuarioUpdateView,
     UsuarioDeleteView,
-    TransaccionCreateView
+    TransaccionCreateView,
+    TransaccionListView
 )
 
 urlpatterns = [
-    # Usuario
     path('', UsuarioListView.as_view(), name='usuario_list'),
     path('crear/', UsuarioCreateView.as_view(), name='usuario_create'),
     path('editar/<int:pk>/', UsuarioUpdateView.as_view(), name='usuario_update'),
     path('eliminar/<int:pk>/', UsuarioDeleteView.as_view(), name='usuario_delete'),
 
-    # Transaccion
+    path('transaccion/', TransaccionListView.as_view(), name='transaccion_list'),
     path('transaccion/crear/', TransaccionCreateView.as_view(), name='transaccion_create'),
 ]

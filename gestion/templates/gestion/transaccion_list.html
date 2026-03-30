@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Transacciones</title>
+</head>
+<body>
+
+    <h1>Listado de Transacciones</h1>
+
+    <a href="{% url 'transaccion_create' %}">Nueva Transacción</a>
+
+    <ul>
+        {% for t in transacciones %}
+            <li>
+                {{ t.id_usuario_emisor }} →
+                {{ t.id_usuario_receptor }} :
+                {{ t.importe }}
+            </li>
+        {% empty %}
+            <li>No hay transacciones registradas</li>
+        {% endfor %}
+    </ul>
+
+    <br>
+    <a href="{% url 'usuario_list' %}">Volver a usuarios</a>
+
+</body>
+</html>

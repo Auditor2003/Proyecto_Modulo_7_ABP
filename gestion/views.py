@@ -43,6 +43,16 @@ class UsuarioDeleteView(DeleteView):
     # Elimino un usuario con confirmación previa
 
 
+# LIST TRANSACCION
+
+class TransaccionListView(ListView):
+    model = Transaccion
+    template_name = 'gestion/transaccion_list.html'
+    context_object_name = 'transacciones'
+
+    # Muestro todas las transacciones
+
+
 # CREATE TRANSACCION
 
 class TransaccionCreateView(CreateView):
