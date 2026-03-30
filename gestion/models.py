@@ -24,17 +24,34 @@ class Usuario(models.Model):
         return self.nombre
 
 
+class Beneficiario(models.Model):
+    # Este modelo representa a personas que reciben dinero sin tener login
+    beneficiario_id = models.AutoField(primary_key=True)
+
+    nombre = models.CharField(max_length=100)
+
+    # Campo opcional por si quieres extender después (email, alias, etc.)
+    detalle = models.CharField(max_length=150, blank=True, null=True)
+
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.nombre
+
+
 class Transaccion(models.Model):
     transaction_id = models.AutoField(primary_key=True)
 
+    # Emisor SIEMPRE es un usuario del sistema
     id_usuario_emisor = models.ForeignKey(
         Usuario,
         on_delete=models.CASCADE,
         related_name='transacciones_enviadas'
     )
 
-    id_usuario_receptor = models.ForeignKey(
-        Usuario,
+    # Receptor ahora es Beneficiario (cambio de arquitectura)
+    id_beneficiario = models.ForeignKey(
+        Beneficiario,
         on_delete=models.CASCADE,
         related_name='transacciones_recibidas'
     )
@@ -50,13 +67,11 @@ class Transaccion(models.Model):
     class Meta:
         indexes = [
             models.Index(fields=['id_usuario_emisor', 'fecha_transaccion']),
-            models.Index(fields=['id_usuario_receptor', 'fecha_transaccion']),
+            models.Index(fields=['id_beneficiario', 'fecha_transaccion']),
         ]
 
     def clean(self):
-        if self.id_usuario_emisor == self.id_usuario_receptor:
-            raise ValidationError("El usuario no puede transferirse a sí mismo.")
-
+        # Validación de monto
         if self.importe <= 0:
             raise ValidationError("El importe debe ser mayor que 0.")
 
@@ -65,4 +80,4 @@ class Transaccion(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.id_usuario_emisor} -> {self.id_usuario_receptor} : {self.importe}"
+        return f"{self.id_usuario_emisor} -> {self.id_beneficiario} : {self.importe}"
