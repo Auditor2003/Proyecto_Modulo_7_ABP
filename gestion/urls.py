@@ -4,6 +4,10 @@ from .views import (
     UsuarioCreateView,
     UsuarioUpdateView,
     UsuarioDeleteView,
+    MonedaListView,
+    MonedaCreateView,
+    MonedaUpdateView,
+    MonedaDeleteView,
     TransaccionCreateView,
     TransaccionListView
 )
@@ -13,6 +17,11 @@ urlpatterns = [
     path('crear/', UsuarioCreateView.as_view(), name='usuario_create'),
     path('editar/<int:pk>/', UsuarioUpdateView.as_view(), name='usuario_update'),
     path('eliminar/<int:pk>/', UsuarioDeleteView.as_view(), name='usuario_delete'),
+
+    path('moneda/', MonedaListView.as_view(), name='moneda_list'),
+    path('moneda/crear/', MonedaCreateView.as_view(), name='moneda_create'),
+    path('moneda/editar/<int:pk>/', MonedaUpdateView.as_view(), name='moneda_update'),
+    path('moneda/eliminar/<int:pk>/', MonedaDeleteView.as_view(), name='moneda_delete'),
 
     path('transaccion/', TransaccionListView.as_view(), name='transaccion_list'),
     path('transaccion/crear/', TransaccionCreateView.as_view(), name='transaccion_create'),

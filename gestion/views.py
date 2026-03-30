@@ -43,6 +43,42 @@ class UsuarioDeleteView(DeleteView):
     # Elimino un usuario con confirmación previa
 
 
+# CRUD MONEDA
+
+class MonedaListView(ListView):
+    model = Moneda
+    template_name = 'gestion/moneda_list.html'
+    context_object_name = 'monedas'
+
+    # Muestro todas las monedas
+
+
+class MonedaCreateView(CreateView):
+    model = Moneda
+    template_name = 'gestion/moneda_form.html'
+    fields = ['nombre_moneda', 'simbolo']
+    success_url = reverse_lazy('moneda_list')
+
+    # Creo una nueva moneda
+
+
+class MonedaUpdateView(UpdateView):
+    model = Moneda
+    template_name = 'gestion/moneda_form.html'
+    fields = ['nombre_moneda', 'simbolo']
+    success_url = reverse_lazy('moneda_list')
+
+    # Edito una moneda existente
+
+
+class MonedaDeleteView(DeleteView):
+    model = Moneda
+    template_name = 'gestion/moneda_confirm_delete.html'
+    success_url = reverse_lazy('moneda_list')
+
+    # Elimino una moneda
+
+
 # LIST TRANSACCION
 
 class TransaccionListView(ListView):

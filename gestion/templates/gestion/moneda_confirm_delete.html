@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Eliminar Moneda</title>
+</head>
+<body>
+
+<h1>¿Eliminar moneda?</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirmar</button>
+</form>
+
+<a href="{% url 'moneda_list' %}">Cancelar</a>
+
+</body>
+</html>
