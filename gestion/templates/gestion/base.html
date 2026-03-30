@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Alke Wallet</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 0;
+        }
+
+        .navbar {
+            background-color: #222;
+            padding: 10px;
+        }
+
+        .navbar a {
+            color: white;
+            margin-right: 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR GLOBAL -->
+    <div class="navbar">
+        <a href="{% url 'usuario_list' %}">Usuarios</a>
+        <a href="{% url 'moneda_list' %}">Monedas</a>
+        <a href="{% url 'transaccion_list' %}">Transacciones</a>
+        <a href="{% url 'transaccion_create' %}">Enviar dinero</a>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+</html>
