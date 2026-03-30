@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Transacción</title>
+</head>
+<body>
+
+    <h1>Crear Transacción</h1>
+
+    <!-- Mensajes del sistema -->
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Formulario -->
+    <form method="post">
+        {% csrf_token %}
+
+        <p>
+            <label>Emisor:</label><br>
+            {{ form.id_usuario_emisor }}
+        </p>
+
+        <p>
+            <label>Receptor:</label><br>
+            {{ form.id_usuario_receptor }}
+        </p>
+
+        <p>
+            <label>Moneda:</label><br>
+            {{ form.currency_id }}
+        </p>
+
+        <p>
+            <label>Importe:</label><br>
+            {{ form.importe }}
+        </p>
+
+        <button type="submit">Enviar</button>
+    </form>
+
+    <br>
+    <a href="{% url 'transaccion_list' %}">Volver</a>
+
+</body>
+</html>
