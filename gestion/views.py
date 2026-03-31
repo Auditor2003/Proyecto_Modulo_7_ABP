@@ -1,14 +1,13 @@
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.db import transaction
 
 from .models import Usuario, Transaccion, Moneda, Beneficiario
-from .forms import UsuarioForm, TransaccionForm, BeneficiarioForm
+from .forms import UsuarioForm, TransaccionForm, BeneficiarioForm, DepositoForm
 
 
-# CRUD USUARIO
-
+# USUARIO
 
 class UsuarioListView(ListView):
     model = Usuario
@@ -44,7 +43,7 @@ class UsuarioDeleteView(DeleteView):
     # Elimino un usuario con confirmación
 
 
-# CRUD MONEDA
+# MONEDA
 
 class MonedaListView(ListView):
     model = Moneda
@@ -80,8 +79,7 @@ class MonedaDeleteView(DeleteView):
     # Elimino una moneda
 
 
-# BENEFICIARIO (SOLO CREATE)
-
+# BENEFICIARIO
 
 class BeneficiarioCreateView(CreateView):
     model = Beneficiario
@@ -89,8 +87,7 @@ class BeneficiarioCreateView(CreateView):
     template_name = 'gestion/beneficiario_form.html'
     success_url = reverse_lazy('transaccion_create')
 
-    # Creo un beneficiario desde el flujo de transacción
-    # y lo redirijo de vuelta para continuar el proceso
+    # Creo un beneficiario desde el flujo de transacción y vuelvo al formulario
 
 
 # TRANSACCIONES
@@ -109,7 +106,7 @@ class TransaccionCreateView(CreateView):
     template_name = 'gestion/transaccion_form.html'
     success_url = reverse_lazy('transaccion_list')
 
-    # Aplico lógica de negocio al crear una transacción
+    # Aplico la lógica de negocio al crear una transacción
     def form_valid(self, form):
 
         emisor = form.cleaned_data['id_usuario_emisor']
@@ -123,13 +120,11 @@ class TransaccionCreateView(CreateView):
         try:
             with transaction.atomic():
 
-                # Descuento el saldo del emisor
+                # Descuento saldo al emisor
                 emisor.saldo -= importe
                 emisor.save()
 
-                # No sumo saldo al beneficiario porque no tiene cuenta
-                # Solo registro la transacción
-
+                # Registro la transacción
                 response = super().form_valid(form)
 
             messages.success(self.request, "Transacción realizada correctamente.")
@@ -137,4 +132,36 @@ class TransaccionCreateView(CreateView):
 
         except Exception as e:
             messages.error(self.request, f"Error: {str(e)}")
+            return self.form_invalid(form)
+
+
+# DEPOSITO
+
+class DepositoCreateView(FormView):
+    template_name = 'gestion/deposito_form.html'
+    form_class = DepositoForm
+    success_url = reverse_lazy('usuario_list')
+
+    # Proceso el depósito y aumento el saldo del usuario
+    def form_valid(self, form):
+
+        usuario = form.cleaned_data['usuario']
+        monto = form.cleaned_data['monto']
+
+        try:
+            with transaction.atomic():
+
+                # Sumo saldo al usuario
+                usuario.saldo += monto
+                usuario.save()
+
+            messages.success(
+                self.request,
+                f"Depósito realizado correctamente. Nuevo saldo: {usuario.saldo}"
+            )
+
+            return super().form_valid(form)
+
+        except Exception as e:
+            messages.error(self.request, f"Error al realizar depósito: {str(e)}")
             return self.form_invalid(form)
