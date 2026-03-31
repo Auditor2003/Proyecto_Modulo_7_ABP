@@ -2,16 +2,19 @@
 
 {% block content %}
 
-<!-- Estoy mostrando todos los beneficiarios -->
-
 <h1>Beneficiarios</h1>
 
 <ul>
     {% for b in beneficiarios %}
         <li>
             {{ b.nombre }}
+
             <a href="{% url 'beneficiario_update' b.pk %}">Editar</a>
-            <a href="{% url 'beneficiario_delete' b.pk %}">Eliminar</a>
+
+            <form action="{% url 'beneficiario_delete' b.pk %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Eliminar</button>
+            </form>
         </li>
     {% endfor %}
 </ul>
