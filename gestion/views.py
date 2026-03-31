@@ -7,14 +7,15 @@ from .models import Usuario, Transaccion, Moneda, Beneficiario
 from .forms import UsuarioForm, TransaccionForm, BeneficiarioForm
 
 
-# 
 # CRUD USUARIO
-# 
+
 
 class UsuarioListView(ListView):
     model = Usuario
     template_name = 'gestion/usuario_list.html'
     context_object_name = 'usuarios'
+
+    # Muestro todos los usuarios registrados
 
 
 class UsuarioCreateView(CreateView):
@@ -23,6 +24,8 @@ class UsuarioCreateView(CreateView):
     form_class = UsuarioForm
     success_url = reverse_lazy('usuario_list')
 
+    # Creo un nuevo usuario
+
 
 class UsuarioUpdateView(UpdateView):
     model = Usuario
@@ -30,21 +33,25 @@ class UsuarioUpdateView(UpdateView):
     form_class = UsuarioForm
     success_url = reverse_lazy('usuario_list')
 
+    # Permito editar usuarios existentes
+
 
 class UsuarioDeleteView(DeleteView):
     model = Usuario
     template_name = 'gestion/usuario_confirm_delete.html'
     success_url = reverse_lazy('usuario_list')
 
+    # Elimino un usuario con confirmación
 
-# 
+
 # CRUD MONEDA
-#
 
 class MonedaListView(ListView):
     model = Moneda
     template_name = 'gestion/moneda_list.html'
     context_object_name = 'monedas'
+
+    # Muestro todas las monedas
 
 
 class MonedaCreateView(CreateView):
@@ -53,6 +60,8 @@ class MonedaCreateView(CreateView):
     fields = ['nombre_moneda', 'simbolo']
     success_url = reverse_lazy('moneda_list')
 
+    # Creo una moneda
+
 
 class MonedaUpdateView(UpdateView):
     model = Moneda
@@ -60,49 +69,28 @@ class MonedaUpdateView(UpdateView):
     fields = ['nombre_moneda', 'simbolo']
     success_url = reverse_lazy('moneda_list')
 
+    # Edito una moneda existente
+
 
 class MonedaDeleteView(DeleteView):
     model = Moneda
     template_name = 'gestion/moneda_confirm_delete.html'
     success_url = reverse_lazy('moneda_list')
 
+    # Elimino una moneda
 
-# 
-# CRUD BENEFICIARIO 
-#
 
-class BeneficiarioListView(ListView):
-    model = Beneficiario
-    template_name = 'gestion/beneficiario_list.html'
-    context_object_name = 'beneficiarios'
-
-    # Muestro todos los beneficiarios
+# BENEFICIARIO (SOLO CREATE)
 
 
 class BeneficiarioCreateView(CreateView):
     model = Beneficiario
     form_class = BeneficiarioForm
     template_name = 'gestion/beneficiario_form.html'
-    success_url = reverse_lazy('beneficiario_list')
+    success_url = reverse_lazy('transaccion_create')
 
-    # Creo beneficiario desde la web
-
-
-class BeneficiarioUpdateView(UpdateView):
-    model = Beneficiario
-    form_class = BeneficiarioForm
-    template_name = 'gestion/beneficiario_form.html'
-    success_url = reverse_lazy('beneficiario_list')
-
-    # Edito beneficiario
-
-
-class BeneficiarioDeleteView(DeleteView):
-    model = Beneficiario
-    template_name = 'gestion/beneficiario_confirm_delete.html'
-    success_url = reverse_lazy('beneficiario_list')
-
-    # Elimino beneficiario
+    # Creo un beneficiario desde el flujo de transacción
+    # y lo redirijo de vuelta para continuar el proceso
 
 
 # TRANSACCIONES
@@ -112,6 +100,8 @@ class TransaccionListView(ListView):
     template_name = 'gestion/transaccion_list.html'
     context_object_name = 'transacciones'
 
+    # Muestro todas las transacciones realizadas
+
 
 class TransaccionCreateView(CreateView):
     model = Transaccion
@@ -119,19 +109,26 @@ class TransaccionCreateView(CreateView):
     template_name = 'gestion/transaccion_form.html'
     success_url = reverse_lazy('transaccion_list')
 
+    # Aplico lógica de negocio al crear una transacción
     def form_valid(self, form):
 
         emisor = form.cleaned_data['id_usuario_emisor']
         importe = form.cleaned_data['importe']
 
+        # Valido que el usuario tenga saldo suficiente
         if emisor.saldo < importe:
             messages.error(self.request, "Saldo insuficiente.")
             return self.form_invalid(form)
 
         try:
             with transaction.atomic():
+
+                # Descuento el saldo del emisor
                 emisor.saldo -= importe
                 emisor.save()
+
+                # No sumo saldo al beneficiario porque no tiene cuenta
+                # Solo registro la transacción
 
                 response = super().form_valid(form)
 
