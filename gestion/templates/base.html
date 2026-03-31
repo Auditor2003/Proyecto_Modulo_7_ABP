@@ -7,7 +7,8 @@
 <body>
 
 <nav>
-    <!-- Yo dejo accesos principales del sistema -->
+    <!-- Dejo accesos principales del sistema -->
+
     <a href="{% url 'usuario_list' %}">Usuarios</a>
     <a href="{% url 'usuario_create' %}">Crear usuario</a>
 
@@ -16,19 +17,21 @@
 
     <a href="{% url 'deposito_create' %}">Depositar dinero</a>
 
+    <!-- ESTE ES EL QUE TE FALTABA -->
+    <a href="{% url 'beneficiario_list' %}">Beneficiarios</a>
+
     <a href="{% url 'moneda_list' %}">Monedas</a>
 </nav>
 
 <hr>
 
-<!-- Yo muestro mensajes del sistema (CLAVE para UX) -->
+<!-- Muestro mensajes del sistema -->
 {% if messages %}
     {% for message in messages %}
         <p>{{ message }}</p>
     {% endfor %}
 {% endif %}
 
-<!-- Contenido dinámico -->
 {% block content %}
 {% endblock %}
 
