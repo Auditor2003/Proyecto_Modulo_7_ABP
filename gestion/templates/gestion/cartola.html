@@ -10,6 +10,7 @@
     <tr>
         <th>Fecha</th>
         <th>Tipo</th>
+        <th>Beneficiario</th> <!-- 🔥 NUEVA COLUMNA -->
         <th>Detalle</th>
         <th>Monto</th>
     </tr>
@@ -18,21 +19,22 @@
     <tr>
         <td>{{ mov.fecha_transaccion }}</td>
 
-        <!-- Yo determino si es depósito o egreso -->
         {% if mov.id_beneficiario.nombre == "DEPOSITO" %}
             <td>Depósito</td>
+            <td>--</td> <!-- 👈 No mostramos beneficiario técnico -->
             <td>Carga de saldo</td>
             <td>+ {{ mov.importe }}</td>
         {% else %}
             <td>Egreso</td>
-            <td>{{ mov.id_beneficiario.nombre }}</td>
+            <td>{{ mov.id_beneficiario.nombre }}</td> <!-- 🔥 AQUÍ -->
+            <td>Transferencia</td>
             <td>- {{ mov.importe }}</td>
         {% endif %}
 
     </tr>
     {% empty %}
     <tr>
-        <td colspan="4">No hay movimientos</td>
+        <td colspan="5">No hay movimientos</td>
     </tr>
     {% endfor %}
 </table>

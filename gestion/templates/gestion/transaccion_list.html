@@ -9,6 +9,7 @@
         <th>Fecha</th>
         <th>Usuario</th>
         <th>Tipo</th>
+        <th>Beneficiario</th> <!-- 🔥 NUEVO -->
         <th>Detalle</th>
         <th>Monto</th>
     </tr>
@@ -18,14 +19,15 @@
         <td>{{ t.fecha_transaccion }}</td>
         <td>{{ t.id_usuario_emisor.nombre }}</td>
 
-        <!-- Yo determino el tipo igual que en cartola -->
         {% if t.id_beneficiario.nombre == "DEPOSITO" %}
             <td>Depósito</td>
+            <td>--</td> <!-- 👈 oculto técnico -->
             <td>Carga de saldo</td>
             <td>+ {{ t.importe }}</td>
         {% else %}
             <td>Egreso</td>
-            <td>{{ t.id_beneficiario.nombre }}</td>
+            <td>{{ t.id_beneficiario.nombre }}</td> <!-- 🔥 AQUÍ -->
+            <td>Transferencia</td>
             <td>- {{ t.importe }}</td>
         {% endif %}
 
