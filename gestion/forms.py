@@ -2,8 +2,8 @@ from django import forms
 from .models import Usuario, Transaccion, Beneficiario
 
 
-# FORM USUARIO
 
+# FORM USUARIO
 
 class UsuarioForm(forms.ModelForm):
     # Agrego campo para confirmar contraseña
@@ -38,7 +38,9 @@ class UsuarioForm(forms.ModelForm):
         return cleaned_data
 
 
+
 # FORM BENEFICIARIO
+
 
 class BeneficiarioForm(forms.ModelForm):
     class Meta:
@@ -49,7 +51,6 @@ class BeneficiarioForm(forms.ModelForm):
 
 
 # FORM TRANSACCION
-
 
 class TransaccionForm(forms.ModelForm):
 
@@ -78,3 +79,32 @@ class TransaccionForm(forms.ModelForm):
             raise forms.ValidationError("El emisor no tiene saldo suficiente.")
 
         return cleaned_data
+
+
+# FORM DEPOSITO 
+
+
+class DepositoForm(forms.Form):
+
+    # Selecciono el usuario que recibirá el depósito
+    usuario = forms.ModelChoiceField(
+        queryset=Usuario.objects.all(),
+        label="Usuario"
+    )
+
+    # Monto a depositar
+    monto = forms.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        min_value=0.01,
+        label="Monto a depositar"
+    )
+
+    def clean_monto(self):
+        monto = self.cleaned_data.get('monto')
+
+        # Validación extra de seguridad
+        if monto <= 0:
+            raise forms.ValidationError("El monto debe ser mayor a 0.")
+
+        return monto
