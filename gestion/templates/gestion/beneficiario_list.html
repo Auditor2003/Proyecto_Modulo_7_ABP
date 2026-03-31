@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Estoy mostrando todos los beneficiarios -->
+
+<h1>Beneficiarios</h1>
+
+<ul>
+    {% for b in beneficiarios %}
+        <li>
+            {{ b.nombre }}
+            <a href="{% url 'beneficiario_update' b.pk %}">Editar</a>
+            <a href="{% url 'beneficiario_delete' b.pk %}">Eliminar</a>
+        </li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'beneficiario_create' %}">Crear nuevo beneficiario</a>
+
+{% endblock %}
