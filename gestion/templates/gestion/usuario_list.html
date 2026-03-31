@@ -1,31 +1,29 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<title>Lista de Usuarios</title>
 
+<h2>Usuarios</h2>
 
+<table border="1">
+    <tr>
+        <th>Nombre</th>
+        <th>Saldo</th>
+        <th>Acciones</th>
+    </tr>
 
-    <h1>Usuarios</h1>
+    {% for usuario in usuarios %}
+    <tr>
+        <td>{{ usuario.nombre }}</td>
+        <td>{{ usuario.saldo }}</td>
+        <td>
+            <a href="{% url 'usuario_update' usuario.user_id %}">Editar</a>
+            <a href="{% url 'usuario_delete' usuario.user_id %}">Eliminar</a>
+            <a href="{% url 'cartola_usuario' usuario.user_id %}">Cartola</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
 
-    <!-- Aquí dejo un enlace para crear un nuevo usuario -->
-    <a href="{% url 'usuario_create' %}">Crear nuevo usuario</a>
-
-    <br><br>
-
-    <ul>
-        {% for usuario in usuarios %}
-            <li>
-                {{ usuario.nombre }} - {{ usuario.correo_electronico }} - Saldo: {{ usuario.saldo }}
-
-                <!-- Botón editar -->
-                <a href="{% url 'usuario_update' usuario.pk %}">Editar</a>
-
-                <!-- Botón eliminar -->
-                <a href="{% url 'usuario_delete' usuario.pk %}">Eliminar</a>
-            </li>
-        {% empty %}
-            <li>No hay usuarios registrados.</li>
-        {% endfor %}
-    </ul>
+<a href="{% url 'usuario_create' %}">Crear usuario</a>
 
 {% endblock %}
