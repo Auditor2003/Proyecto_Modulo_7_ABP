@@ -72,7 +72,7 @@ class BeneficiarioCreateView(CreateView):
     success_url = reverse_lazy('transaccion_create')
 
 
-# TRANSACCIONES
+# TRANSACCIONES (historial general)
 
 class TransaccionListView(ListView):
     model = Transaccion
@@ -123,8 +123,23 @@ class DepositoCreateView(FormView):
 
         try:
             with transaction.atomic():
+
+                # Creo o reutilizo beneficiario especial
+                beneficiario, _ = Beneficiario.objects.get_or_create(
+                    nombre="DEPOSITO"
+                )
+
+                # Aumento saldo
                 usuario.saldo += monto
                 usuario.save()
+
+                # Registro movimiento como transacción
+                Transaccion.objects.create(
+                    id_usuario_emisor=usuario,
+                    id_beneficiario=beneficiario,
+                    currency_id=Moneda.objects.first(),
+                    importe=monto
+                )
 
             messages.success(
                 self.request,
@@ -138,7 +153,7 @@ class DepositoCreateView(FormView):
             return self.form_invalid(form)
 
 
-# CARTOLA
+# CARTOLA (por usuario)
 
 class CartolaUsuarioView(ListView):
     model = Transaccion
@@ -153,9 +168,6 @@ class CartolaUsuarioView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         usuario_id = self.kwargs.get('usuario_id')
-        usuario = Usuario.objects.get(pk=usuario_id)
-
-        context['usuario'] = usuario
+        context['usuario'] = Usuario.objects.get(pk=usuario_id)
         return context

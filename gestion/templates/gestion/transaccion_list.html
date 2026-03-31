@@ -1,100 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<html lang="es">
 
-    <meta charset="UTF-8">
-    <title>Transacciones</title>
+<h2>Historial de transacciones</h2>
 
-    <!-- Yo agrego estilos simples para mejorar la UX -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f4f6f8;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-            text-decoration: none;
-        }
-
-        .btn:hover {
-            background-color: #0056b3;
-        }
-
-        .card {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 10px;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .usuarios {
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-
-        .usuario {
-            font-weight: bold;
-        }
-
-        .monto {
-            font-size: 18px;
-            font-weight: bold;
-            color: green;
-        }
-
-        .fecha {
-            font-size: 12px;
-            color: gray;
-        }
-    </style>
-
-
-
-    <h1>Listado de Transacciones</h1>
-
-    <!-- Yo dejo un botón más visible -->
-    <a href="{% url 'transaccion_create' %}" class="btn">+ Nueva Transacción</a>
+<table border="1">
+    <tr>
+        <th>Fecha</th>
+        <th>Usuario</th>
+        <th>Beneficiario</th>
+        <th>Monto</th>
+    </tr>
 
     {% for t in transacciones %}
-        <div class="card">
-
-            <!-- Yo muestro los nombres (gracias al __str__ del modelo) -->
-            <div class="usuarios">
-                <span class="usuario">{{ t.id_usuario_emisor }}</span>
-                →
-                <span class="usuario">{{ t.id_usuario_receptor }}</span>
-            </div>
-
-            <!-- Yo muestro el monto con símbolo de moneda -->
-            <div class="monto">
-                {{ t.importe }} {{ t.currency_id.simbolo }}
-            </div>
-
-            <!-- Yo muestro la fecha -->
-            <div class="fecha">
-                {{ t.fecha_transaccion }}
-            </div>
-
-        </div>
-
-    {% empty %}
-        <p>No hay transacciones registradas</p>
+    <tr>
+        <td>{{ t.fecha_transaccion }}</td>
+        <td>{{ t.id_usuario_emisor.nombre }}</td>
+        <td>{{ t.id_beneficiario.nombre }}</td>
+        <td>{{ t.importe }}</td>
+    </tr>
     {% endfor %}
+</table>
 
-    <br><br>
-    <a href="{% url 'usuario_list' %}">← Volver a usuarios</a>
+<a href="{% url 'transaccion_create' %}">Nueva transacción</a>
 
 {% endblock %}

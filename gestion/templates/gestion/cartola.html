@@ -7,19 +7,29 @@
 <table border="1">
     <tr>
         <th>Fecha</th>
-        <th>Beneficiario</th>
+        <th>Tipo</th>
+        <th>Detalle</th>
         <th>Monto</th>
     </tr>
 
     {% for mov in movimientos %}
     <tr>
         <td>{{ mov.fecha_transaccion }}</td>
-        <td>{{ mov.id_beneficiario.nombre }}</td>
-        <td>- {{ mov.importe }}</td>
+
+        {% if mov.id_beneficiario.nombre == "DEPOSITO" %}
+            <td>Depósito</td>
+            <td>Carga de saldo</td>
+            <td>+ {{ mov.importe }}</td>
+        {% else %}
+            <td>Envío</td>
+            <td>{{ mov.id_beneficiario.nombre }}</td>
+            <td>- {{ mov.importe }}</td>
+        {% endif %}
+
     </tr>
     {% empty %}
     <tr>
-        <td colspan="3">No hay movimientos</td>
+        <td colspan="4">No hay movimientos</td>
     </tr>
     {% endfor %}
 </table>
