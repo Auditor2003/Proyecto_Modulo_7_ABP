@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Depositar dinero</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">Depositar</button>
+</form>
+
+<a href="{% url 'usuario_list' %}">Volver</a>
+
+{% endblock %}
