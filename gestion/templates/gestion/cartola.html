@@ -18,12 +18,13 @@
     <tr>
         <td>{{ mov.fecha_transaccion }}</td>
 
+        <!-- Yo determino si es depósito o egreso -->
         {% if mov.id_beneficiario.nombre == "DEPOSITO" %}
             <td>Depósito</td>
             <td>Carga de saldo</td>
             <td>+ {{ mov.importe }}</td>
         {% else %}
-            <td>Envío</td>
+            <td>Egreso</td>
             <td>{{ mov.id_beneficiario.nombre }}</td>
             <td>- {{ mov.importe }}</td>
         {% endif %}

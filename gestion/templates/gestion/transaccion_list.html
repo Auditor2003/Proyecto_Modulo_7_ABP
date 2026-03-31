@@ -8,7 +8,8 @@
     <tr>
         <th>Fecha</th>
         <th>Usuario</th>
-        <th>Beneficiario</th>
+        <th>Tipo</th>
+        <th>Detalle</th>
         <th>Monto</th>
     </tr>
 
@@ -16,8 +17,18 @@
     <tr>
         <td>{{ t.fecha_transaccion }}</td>
         <td>{{ t.id_usuario_emisor.nombre }}</td>
-        <td>{{ t.id_beneficiario.nombre }}</td>
-        <td>{{ t.importe }}</td>
+
+        <!-- Yo determino el tipo igual que en cartola -->
+        {% if t.id_beneficiario.nombre == "DEPOSITO" %}
+            <td>Depósito</td>
+            <td>Carga de saldo</td>
+            <td>+ {{ t.importe }}</td>
+        {% else %}
+            <td>Egreso</td>
+            <td>{{ t.id_beneficiario.nombre }}</td>
+            <td>- {{ t.importe }}</td>
+        {% endif %}
+
     </tr>
     {% endfor %}
 </table>
