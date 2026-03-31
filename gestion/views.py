@@ -35,6 +35,20 @@ class UsuarioDeleteView(DeleteView):
     template_name = 'gestion/usuario_confirm_delete.html'
     success_url = reverse_lazy('usuario_list')
 
+    # Yo valido antes de eliminar
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        # Si tiene transacciones, NO permito eliminar
+        if Transaccion.objects.filter(id_usuario_emisor=self.object).exists():
+            messages.error(
+                request,
+                "No se puede eliminar este usuario porque tiene transacciones registradas."
+            )
+            return redirect('usuario_list')
+
+        return super().post(request, *args, **kwargs)
+
 
 # MONEDA
 
