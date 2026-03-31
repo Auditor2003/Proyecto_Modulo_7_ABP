@@ -1,7 +1,4 @@
 from pathlib import Path
-import pymysql
-
-pymysql.install_as_MySQLdb()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -36,7 +33,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],  
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -50,20 +47,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# CONEXION BASE DE DATOS MYSQL
+
+#  BASE DE DATOS MYSQL (SIN MYSQLCLIENT)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'mysql.connector.django',
         'NAME': 'alkewallet_db',
         'USER': 'root',
-        'PASSWORD': 'DIEGO1234',  
+        'PASSWORD': 'DIEGO1234',
         'HOST': 'localhost',
         'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-        }
     }
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
