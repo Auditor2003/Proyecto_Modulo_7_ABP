@@ -4,60 +4,83 @@
 
 <h2>Panel Principal</h2>
 
-{% if not hay_usuarios %}
-
-    <div style="background:#f8d7da; padding:20px; border-radius:10px;">
-        <h3>Debe crear un usuario para comenzar</h3>
-        <p>La wallet necesita al menos un usuario para operar.</p>
-        <a href="{% url 'usuario_create' %}" 
-           style="background:#0a2540; color:white; padding:10px 15px; border-radius:8px; text-decoration:none;">
-           Crear usuario
-        </a>
-    </div>
-
-{% elif not hay_monedas %}
-
-    <div style="background:#fff3cd; padding:20px; border-radius:10px;">
-        <h3>Configuración incompleta</h3>
-        <p>Debe crear una moneda antes de crear al usuario para que la wallet funcione correctamente.</p>
-        <p>Sin moneda no es posible realizar transacciones ni depósitos.</p>
-
-        <a href="{% url 'moneda_create' %}" 
-           style="background:#0a2540; color:white; padding:10px 15px; border-radius:8px; text-decoration:none;">
-           Crear moneda
-        </a>
-    </div>
-
-{% else %}
-
-    <div style="background:#d4edda; padding:20px; border-radius:10px;">
-        <h3>Wallet operativa</h3>
-        <p>Ya puedes comenzar a enviar dinero, depositar y revisar movimientos.</p>
-    </div>
-
-    <br>
-
-    <h3>Acciones rápidas</h3>
-
-    <div style="display:flex; gap:15px; flex-wrap:wrap;">
-
-        <a href="{% url 'transaccion_create' %}" 
-           style="background:#2ec4ff; padding:15px; border-radius:10px; text-decoration:none; color:#0a2540; font-weight:bold;">
-           Enviar dinero
-        </a>
-
-        <a href="{% url 'deposito_create' %}" 
-           style="background:#2ec4ff; padding:15px; border-radius:10px; text-decoration:none; color:#0a2540; font-weight:bold;">
-           Depositar
-        </a>
-
-        <a href="{% url 'transaccion_list' %}" 
-           style="background:#2ec4ff; padding:15px; border-radius:10px; text-decoration:none; color:#0a2540; font-weight:bold;">
-           Ver movimientos
-        </a>
-
-    </div>
-
+<!-- ALERTA SUAVE -->
+{% if not hay_usuarios or not hay_monedas %}
+<div style="
+    background:#fff3cd;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+    border-left:6px solid #ffc107;
+">
+    {% if not hay_usuarios %}
+        <strong>Configuración inicial:</strong> Debes crear un usuario para comenzar.
+        <a href="{% url 'usuario_create' %}">Crear usuario</a>
+    {% elif not hay_monedas %}
+        <strong>Configuración incompleta:</strong> Luego de crear un usuario, debes crear una moneda para operar.
+        <a href="{% url 'moneda_create' %}">Crear moneda</a>
+    {% endif %}
+</div>
 {% endif %}
+
+
+<!-- GRID DE WIDGETS -->
+<div style="
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap:20px;
+">
+
+    <!-- WIDGET USUARIOS -->
+    <div style="
+        background:white;
+        padding:20px;
+        border-radius:12px;
+        box-shadow:0 4px 10px rgba(0,0,0,0.05);
+    ">
+        <h3>Usuarios</h3>
+        <p>Total registrados: {{ usuarios|length }}</p>
+        <a href="{% url 'usuario_list' %}">Ver usuarios</a>
+    </div>
+
+    <!-- WIDGET ACCIONES -->
+    <div style="
+        background:white;
+        padding:20px;
+        border-radius:12px;
+        box-shadow:0 4px 10px rgba(0,0,0,0.05);
+    ">
+        <h3>Acciones rápidas</h3>
+        <p><a href="{% url 'transaccion_create' %}">Enviar dinero</a></p>
+        <p><a href="{% url 'deposito_create' %}">Depositar</a></p>
+        <p><a href="{% url 'transaccion_list' %}">Ver movimientos</a></p>
+    </div>
+
+    <!-- WIDGET ECONÓMICO (SIMULADO) -->
+    <div style="
+        background:white;
+        padding:20px;
+        border-radius:12px;
+        box-shadow:0 4px 10px rgba(0,0,0,0.05);
+    ">
+        <h3>Indicadores</h3>
+        <p>UF: 36.500</p>
+        <p>Dólar: 950</p>
+        <p>Euro: 1.020</p>
+    </div>
+
+    <!-- WIDGET CLIMA (SIMULADO) -->
+    <div style="
+        background:white;
+        padding:20px;
+        border-radius:12px;
+        box-shadow:0 4px 10px rgba(0,0,0,0.05);
+    ">
+        <h3>Clima</h3>
+        <p>Santiago</p>
+        <p>22°C - Soleado</p>
+    </div>
+
+</div>
 
 {% endblock %}
