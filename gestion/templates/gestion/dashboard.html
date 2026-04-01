@@ -4,83 +4,77 @@
 
 <h2>Panel Principal</h2>
 
-<!-- ALERTA SUAVE -->
 {% if not hay_usuarios or not hay_monedas %}
-<div style="
-    background:#fff3cd;
-    padding:15px;
-    border-radius:10px;
-    margin-bottom:20px;
-    border-left:6px solid #ffc107;
-">
+<div style="background:#fff3cd; padding:15px; border-radius:10px; margin-bottom:20px; border-left:6px solid #ffc107;">
     {% if not hay_usuarios %}
-        <strong>Configuración inicial:</strong> Debes crear un usuario para comenzar.
-        <a href="{% url 'usuario_create' %}">Crear usuario</a>
+        Debes crear un usuario.
+        <a href="{% url 'usuario_create' %}">Crear</a>
     {% elif not hay_monedas %}
-        <strong>Configuración incompleta:</strong> Luego de crear un usuario, debes crear una moneda para operar.
-        <a href="{% url 'moneda_create' %}">Crear moneda</a>
+        Debes crear una moneda.
+        <a href="{% url 'moneda_create' %}">Crear</a>
     {% endif %}
 </div>
 {% endif %}
 
+<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:20px;">
 
-<!-- GRID DE WIDGETS -->
-<div style="
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap:20px;
-">
-
-    <!-- WIDGET USUARIOS -->
-    <div style="
-        background:white;
-        padding:20px;
-        border-radius:12px;
-        box-shadow:0 4px 10px rgba(0,0,0,0.05);
-    ">
+    <div class="card">
         <h3>Usuarios</h3>
-        <p>Total registrados: {{ usuarios|length }}</p>
-        <a href="{% url 'usuario_list' %}">Ver usuarios</a>
+        <h2>{{ usuarios|length }}</h2>
+        <a href="{% url 'usuario_list' %}" class="btn">Ver</a>
     </div>
 
-    <!-- WIDGET ACCIONES -->
-    <div style="
-        background:white;
-        padding:20px;
-        border-radius:12px;
-        box-shadow:0 4px 10px rgba(0,0,0,0.05);
-    ">
-        <h3>Acciones rápidas</h3>
-        <p><a href="{% url 'transaccion_create' %}">Enviar dinero</a></p>
-        <p><a href="{% url 'deposito_create' %}">Depositar</a></p>
-        <p><a href="{% url 'transaccion_list' %}">Ver movimientos</a></p>
+    <div class="card">
+        <h3>Acciones</h3>
+        <a href="{% url 'transaccion_create' %}" class="mini-btn">Enviar</a>
+        <a href="{% url 'deposito_create' %}" class="mini-btn">Depositar</a>
+        <a href="{% url 'transaccion_list' %}" class="mini-btn">Movimientos</a>
     </div>
 
-    <!-- WIDGET ECONÓMICO (SIMULADO) -->
-    <div style="
-        background:white;
-        padding:20px;
-        border-radius:12px;
-        box-shadow:0 4px 10px rgba(0,0,0,0.05);
-    ">
+    <div class="card">
         <h3>Indicadores</h3>
-        <p>UF: 36.500</p>
-        <p>Dólar: 950</p>
-        <p>Euro: 1.020</p>
+        <p>UF: {{ uf }}</p>
+        <p>Dólar: {{ dolar }}</p>
+        <p>Euro: {{ euro }}</p>
     </div>
 
-    <!-- WIDGET CLIMA (SIMULADO) -->
-    <div style="
-        background:white;
-        padding:20px;
-        border-radius:12px;
-        box-shadow:0 4px 10px rgba(0,0,0,0.05);
-    ">
+    <div class="card">
         <h3>Clima</h3>
         <p>Santiago</p>
-        <p>22°C - Soleado</p>
+        <p>22°C</p>
     </div>
 
 </div>
+
+<style>
+.card {
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 6px 15px rgba(0,0,0,0.08);
+    transition:0.3s;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+}
+
+.btn {
+    background:#2ec4ff;
+    padding:8px;
+    display:inline-block;
+    border-radius:8px;
+    text-decoration:none;
+}
+
+.mini-btn {
+    display:block;
+    margin-top:8px;
+    background:#f1faff;
+    padding:8px;
+    border-radius:8px;
+    text-decoration:none;
+}
+</style>
 
 {% endblock %}

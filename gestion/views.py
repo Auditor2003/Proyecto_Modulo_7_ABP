@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.db import transaction
 from django.shortcuts import redirect
+import requests
 
 from .models import Usuario, Transaccion, Moneda, Beneficiario
 from .forms import UsuarioForm, TransaccionForm, BeneficiarioForm, DepositoForm
@@ -37,7 +38,6 @@ class UsuarioDeleteView(DeleteView):
     template_name = 'gestion/usuario_confirm_delete.html'
     success_url = reverse_lazy('usuario_list')
 
-    # Evita eliminar usuarios que tienen transacciones asociadas
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
 
@@ -86,7 +86,6 @@ class BeneficiarioListView(ListView):
     template_name = 'gestion/beneficiario_list.html'
     context_object_name = 'beneficiarios'
 
-    # Oculta el beneficiario técnico "DEPOSITO"
     def get_queryset(self):
         return Beneficiario.objects.exclude(nombre="DEPOSITO")
 
@@ -110,7 +109,6 @@ class BeneficiarioDeleteView(DeleteView):
     template_name = 'gestion/beneficiario_confirm_delete.html'
     success_url = reverse_lazy('beneficiario_list')
 
-    # Evita eliminar beneficiarios con transacciones asociadas
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
 
@@ -142,7 +140,6 @@ class TransaccionCreateView(CreateView):
         emisor = form.cleaned_data['id_usuario_emisor']
         importe = form.cleaned_data['importe']
 
-        # Validación de saldo suficiente
         if emisor.saldo < importe:
             messages.error(
                 self.request,
@@ -152,18 +149,11 @@ class TransaccionCreateView(CreateView):
 
         try:
             with transaction.atomic():
-                # Descuenta saldo al usuario
                 emisor.saldo -= importe
                 emisor.save()
-
-                # Guarda la transacción
                 response = super().form_valid(form)
 
-            messages.success(
-                self.request,
-                "Transacción realizada correctamente."
-            )
-
+            messages.success(self.request, "Transacción realizada correctamente.")
             return response
 
         except Exception as e:
@@ -182,7 +172,6 @@ class DepositoCreateView(FormView):
         usuario = form.cleaned_data['usuario']
         monto = form.cleaned_data['monto']
 
-        # Valida que exista al menos una moneda
         moneda = Moneda.objects.first()
 
         if not moneda:
@@ -194,17 +183,11 @@ class DepositoCreateView(FormView):
 
         try:
             with transaction.atomic():
+                beneficiario, _ = Beneficiario.objects.get_or_create(nombre="DEPOSITO")
 
-                # Beneficiario técnico para depósitos
-                beneficiario, _ = Beneficiario.objects.get_or_create(
-                    nombre="DEPOSITO"
-                )
-
-                # Aumenta saldo del usuario
                 usuario.saldo += monto
                 usuario.save()
 
-                # Registra la transacción
                 Transaccion.objects.create(
                     id_usuario_emisor=usuario,
                     id_beneficiario=beneficiario,
@@ -220,10 +203,7 @@ class DepositoCreateView(FormView):
             return super().form_valid(form)
 
         except Exception as e:
-            messages.error(
-                self.request,
-                f"Error al realizar depósito: {str(e)}"
-            )
+            messages.error(self.request, f"Error: {str(e)}")
             return self.form_invalid(form)
 
 
@@ -254,11 +234,23 @@ class DashboardView(ListView):
     template_name = 'gestion/dashboard.html'
     context_object_name = 'usuarios'
 
-    # Agrega información para controlar el estado inicial del sistema
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         context['hay_usuarios'] = Usuario.objects.exists()
         context['hay_monedas'] = Moneda.objects.exists()
+
+        try:
+            response = requests.get("https://mindicador.cl/api")
+            data = response.json()
+
+            context['dolar'] = data['dolar']['valor']
+            context['uf'] = data['uf']['valor']
+            context['euro'] = data['euro']['valor']
+
+        except:
+            context['dolar'] = 'N/D'
+            context['uf'] = 'N/D'
+            context['euro'] = 'N/D'
 
         return context
