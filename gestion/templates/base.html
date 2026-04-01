@@ -1,129 +1,69 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Alke Wallet</title>
+<meta charset="UTF-8">
+<title>Alke Wallet</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #e0f7ff, #ffffff);
-        }
+<style>
+body {
+    margin:0;
+    font-family:Arial;
+    background:linear-gradient(135deg,#e0f7ff,#ffffff);
+}
 
-        nav {
-            background-color: #0a2540;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+nav {
+    background:#0a2540;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+}
 
-        .nav-left {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
+nav a {
+    color:white;
+    text-decoration:none;
+    margin-right:10px;
+    font-weight:bold;
+}
 
-        .nav-right {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
+.logout {
+    background:#ff4d4d;
+    padding:6px 10px;
+    border-radius:6px;
+}
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 8px 12px;
-            border-radius: 8px;
-            transition: 0.2s;
-        }
+.container { padding:20px; }
+.card {
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 5px 10px rgba(0,0,0,0.1);
+    transition:0.3s;
+}
+.card:hover { transform:translateY(-5px); }
+</style>
 
-        nav a:hover {
-            background-color: #2ec4ff;
-            color: #0a2540;
-        }
-
-        .brand {
-            font-size: 18px;
-            font-weight: bold;
-            margin-right: 20px;
-        }
-
-        hr {
-            border: none;
-            height: 1px;
-            background-color: #ccc;
-            margin: 0;
-        }
-
-        .mensaje {
-            padding: 12px;
-            margin: 15px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-        }
-
-        .mensaje.success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .mensaje.error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .mensaje.info {
-            background-color: #d1ecf1;
-            color: #0c5460;
-        }
-
-        .container {
-            padding: 20px;
-        }
-    </style>
 </head>
 
 <body>
 
 <nav>
+<div>
+<a href="{% url 'home' %}">Alke Wallet</a>
+<a href="{% url 'home' %}">Inicio</a>
+<a href="{% url 'transaccion_create' %}">Enviar</a>
+<a href="{% url 'deposito_create' %}">Depositar</a>
+</div>
 
-    <div class="nav-left">
-        <a href="{% url 'home' %}" class="brand">Alke Wallet</a>
-
-        <a href="{% url 'home' %}">Inicio</a>
-        <a href="{% url 'transaccion_create' %}">Enviar</a>
-        <a href="{% url 'deposito_create' %}">Depositar</a>
-        <a href="{% url 'transaccion_list' %}">Movimientos</a>
-    </div>
-
-    <div class="nav-right">
-        <a href="{% url 'beneficiario_list' %}">Beneficiarios</a>
-        <a href="{% url 'moneda_list' %}">Monedas</a>
-        <a href="{% url 'usuario_list' %}">Usuarios</a>
-    </div>
-
+<div>
+<a href="{% url 'beneficiario_list' %}">Beneficiarios</a>
+<a href="{% url 'moneda_list' %}">Monedas</a>
+<a href="{% url 'usuario_list' %}">Usuarios</a>
+<a href="#" class="logout">Cerrar sesión</a>
+</div>
 </nav>
 
-<hr>
-
-{% if messages %}
-    {% for message in messages %}
-        <div class="mensaje 
-            {% if message.tags == 'success' %}success
-            {% elif message.tags == 'error' %}error
-            {% else %}info{% endif %}">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endif %}
-
 <div class="container">
-    {% block content %}
-    {% endblock %}
+{% block content %}{% endblock %}
 </div>
 
 </body>

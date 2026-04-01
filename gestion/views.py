@@ -1,5 +1,3 @@
-# IMPORTACIONES
-
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -10,8 +8,6 @@ import requests
 from .models import Usuario, Transaccion, Moneda, Beneficiario
 from .forms import UsuarioForm, TransaccionForm, BeneficiarioForm, DepositoForm
 
-
-# USUARIO
 
 class UsuarioListView(ListView):
     model = Usuario
@@ -42,16 +38,11 @@ class UsuarioDeleteView(DeleteView):
         self.object = self.get_object()
 
         if Transaccion.objects.filter(id_usuario_emisor=self.object).exists():
-            messages.error(
-                request,
-                "No se puede eliminar este usuario porque tiene transacciones registradas."
-            )
+            messages.error(request, "No se puede eliminar este usuario.")
             return redirect('usuario_list')
 
         return super().post(request, *args, **kwargs)
 
-
-# MONEDA
 
 class MonedaListView(ListView):
     model = Moneda
@@ -78,8 +69,6 @@ class MonedaDeleteView(DeleteView):
     template_name = 'gestion/moneda_confirm_delete.html'
     success_url = reverse_lazy('moneda_list')
 
-
-# BENEFICIARIO
 
 class BeneficiarioListView(ListView):
     model = Beneficiario
@@ -113,16 +102,11 @@ class BeneficiarioDeleteView(DeleteView):
         self.object = self.get_object()
 
         if Transaccion.objects.filter(id_beneficiario=self.object).exists():
-            messages.error(
-                request,
-                "No se puede eliminar este beneficiario porque tiene transacciones asociadas."
-            )
+            messages.error(request, "No se puede eliminar este beneficiario.")
             return redirect('beneficiario_list')
 
         return super().post(request, *args, **kwargs)
 
-
-# TRANSACCIONES
 
 class TransaccionListView(ListView):
     model = Transaccion
@@ -141,27 +125,18 @@ class TransaccionCreateView(CreateView):
         importe = form.cleaned_data['importe']
 
         if emisor.saldo < importe:
-            messages.error(
-                self.request,
-                f"Saldo insuficiente. Saldo actual: {emisor.saldo}"
-            )
+            messages.error(self.request, "Saldo insuficiente")
             return self.form_invalid(form)
 
-        try:
-            with transaction.atomic():
-                emisor.saldo -= importe
-                emisor.save()
-                response = super().form_valid(form)
+        with transaction.atomic():
+            emisor.saldo -= importe
+            emisor.save()
 
-            messages.success(self.request, "Transacción realizada correctamente.")
-            return response
+            response = super().form_valid(form)
 
-        except Exception as e:
-            messages.error(self.request, f"Error: {str(e)}")
-            return self.form_invalid(form)
+        messages.success(self.request, "Transacción realizada correctamente")
+        return response
 
-
-# DEPOSITO
 
 class DepositoCreateView(FormView):
     template_name = 'gestion/deposito_form.html'
@@ -175,59 +150,25 @@ class DepositoCreateView(FormView):
         moneda = Moneda.objects.first()
 
         if not moneda:
-            messages.error(
-                self.request,
-                "Debe crear una moneda antes de realizar depósitos."
-            )
+            messages.error(self.request, "Debe crear una moneda primero")
             return self.form_invalid(form)
 
-        try:
-            with transaction.atomic():
-                beneficiario, _ = Beneficiario.objects.get_or_create(nombre="DEPOSITO")
+        with transaction.atomic():
+            beneficiario, _ = Beneficiario.objects.get_or_create(nombre="DEPOSITO")
 
-                usuario.saldo += monto
-                usuario.save()
+            usuario.saldo += monto
+            usuario.save()
 
-                Transaccion.objects.create(
-                    id_usuario_emisor=usuario,
-                    id_beneficiario=beneficiario,
-                    currency_id=moneda,
-                    importe=monto
-                )
-
-            messages.success(
-                self.request,
-                f"Depósito realizado correctamente. Nuevo saldo: {usuario.saldo}"
+            Transaccion.objects.create(
+                id_usuario_emisor=usuario,
+                id_beneficiario=beneficiario,
+                currency_id=moneda,
+                importe=monto
             )
 
-            return super().form_valid(form)
+        messages.success(self.request, "Depósito realizado correctamente")
+        return super().form_valid(form)
 
-        except Exception as e:
-            messages.error(self.request, f"Error: {str(e)}")
-            return self.form_invalid(form)
-
-
-# CARTOLA
-
-class CartolaUsuarioView(ListView):
-    model = Transaccion
-    template_name = 'gestion/cartola.html'
-    context_object_name = 'movimientos'
-
-    def get_queryset(self):
-        usuario_id = self.kwargs.get('usuario_id')
-        return Transaccion.objects.filter(
-            id_usuario_emisor_id=usuario_id
-        ).order_by('-fecha_transaccion')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        usuario_id = self.kwargs.get('usuario_id')
-        context['usuario'] = Usuario.objects.get(user_id=usuario_id)
-        return context
-
-
-# DASHBOARD
 
 class DashboardView(ListView):
     model = Usuario
@@ -241,16 +182,11 @@ class DashboardView(ListView):
         context['hay_monedas'] = Moneda.objects.exists()
 
         try:
-            response = requests.get("https://mindicador.cl/api")
-            data = response.json()
-
+            data = requests.get("https://mindicador.cl/api").json()
             context['dolar'] = data['dolar']['valor']
             context['uf'] = data['uf']['valor']
             context['euro'] = data['euro']['valor']
-
         except:
-            context['dolar'] = 'N/D'
-            context['uf'] = 'N/D'
-            context['euro'] = 'N/D'
+            context['dolar'] = context['uf'] = context['euro'] = "N/D"
 
         return context

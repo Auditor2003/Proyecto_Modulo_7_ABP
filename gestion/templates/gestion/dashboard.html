@@ -1,80 +1,46 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 <h2>Panel Principal</h2>
 
 {% if not hay_usuarios or not hay_monedas %}
-<div style="background:#fff3cd; padding:15px; border-radius:10px; margin-bottom:20px; border-left:6px solid #ffc107;">
+<div style="background:#fff3cd;padding:10px;border-radius:8px;">
     {% if not hay_usuarios %}
-        Debes crear un usuario.
-        <a href="{% url 'usuario_create' %}">Crear</a>
-    {% elif not hay_monedas %}
-        Debes crear una moneda.
-        <a href="{% url 'moneda_create' %}">Crear</a>
+        Crear usuario
+    {% else %}
+        Crear moneda
     {% endif %}
 </div>
 {% endif %}
 
-<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:20px;">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;">
 
-    <div class="card">
-        <h3>Usuarios</h3>
-        <h2>{{ usuarios|length }}</h2>
-        <a href="{% url 'usuario_list' %}" class="btn">Ver</a>
-    </div>
-
-    <div class="card">
-        <h3>Acciones</h3>
-        <a href="{% url 'transaccion_create' %}" class="mini-btn">Enviar</a>
-        <a href="{% url 'deposito_create' %}" class="mini-btn">Depositar</a>
-        <a href="{% url 'transaccion_list' %}" class="mini-btn">Movimientos</a>
-    </div>
-
-    <div class="card">
-        <h3>Indicadores</h3>
-        <p>UF: {{ uf }}</p>
-        <p>Dólar: {{ dolar }}</p>
-        <p>Euro: {{ euro }}</p>
-    </div>
-
-    <div class="card">
-        <h3>Clima</h3>
-        <p>Santiago</p>
-        <p>22°C</p>
-    </div>
-
+<div class="card">
+<h3>Usuarios</h3>
+<h2>{{ usuarios|length }}</h2>
+<p>Total registrados</p>
 </div>
 
-<style>
-.card {
-    background:white;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0 6px 15px rgba(0,0,0,0.08);
-    transition:0.3s;
-}
+<div class="card">
+<h3>Acciones</h3>
+<a href="{% url 'transaccion_create' %}">Enviar</a><br>
+<a href="{% url 'deposito_create' %}">Depositar</a><br>
+<a href="{% url 'transaccion_list' %}">Movimientos</a>
+</div>
 
-.card:hover {
-    transform: translateY(-6px);
-}
+<div class="card">
+<h3>Indicadores</h3>
+<p>UF: {{ uf }}</p>
+<p>Dólar: {{ dolar }}</p>
+<p>Euro: {{ euro }}</p>
+</div>
 
-.btn {
-    background:#2ec4ff;
-    padding:8px;
-    display:inline-block;
-    border-radius:8px;
-    text-decoration:none;
-}
+<div class="card">
+<h3>Clima</h3>
+<p>Santiago</p>
+<p>22°C</p>
+</div>
 
-.mini-btn {
-    display:block;
-    margin-top:8px;
-    background:#f1faff;
-    padding:8px;
-    border-radius:8px;
-    text-decoration:none;
-}
-</style>
+</div>
 
 {% endblock %}
