@@ -1,37 +1,52 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Alke Wallet</title>
 </head>
+
 <body>
 
+<!-- Navegación principal del sistema -->
 <nav>
-    <!-- Dejo accesos principales del sistema -->
 
+    <!-- Usuarios -->
     <a href="{% url 'usuario_list' %}">Usuarios</a>
     <a href="{% url 'usuario_create' %}">Crear usuario</a>
 
+    <!-- Transacciones -->
     <a href="{% url 'transaccion_list' %}">Historial</a>
     <a href="{% url 'transaccion_create' %}">Enviar dinero</a>
 
+    <!-- Depósitos -->
     <a href="{% url 'deposito_create' %}">Depositar dinero</a>
 
-    <!-- ESTE ES EL QUE TE FALTABA -->
+    <!-- Beneficiarios -->
     <a href="{% url 'beneficiario_list' %}">Beneficiarios</a>
 
+    <!-- Monedas -->
     <a href="{% url 'moneda_list' %}">Monedas</a>
+
 </nav>
 
 <hr>
 
-<!-- Muestro mensajes del sistema -->
+<!-- Mensajes del sistema (errores, éxito, validaciones) -->
 {% if messages %}
     {% for message in messages %}
-        <p>{{ message }}</p>
+        <div style="
+            padding:10px;
+            margin:10px 0;
+            border:1px solid #999;
+            background-color:#f5f5f5;
+        ">
+            {{ message }}
+        </div>
     {% endfor %}
 {% endif %}
 
+<!-- Contenido dinámico de cada vista -->
 {% block content %}
 {% endblock %}
 
