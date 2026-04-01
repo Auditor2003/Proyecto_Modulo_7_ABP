@@ -4,13 +4,14 @@ from .views import *
 
 urlpatterns = [
 
-    # HOME (usuarios)
-    path('', UsuarioListView.as_view(), name='usuario_list'),
+    # HOME (dashboard principal)
+    path('', DashboardView.as_view(), name='home'),
 
     # USUARIO
-    path('crear/', UsuarioCreateView.as_view(), name='usuario_create'),
-    path('editar/<int:pk>/', UsuarioUpdateView.as_view(), name='usuario_update'),
-    path('eliminar/<int:pk>/', UsuarioDeleteView.as_view(), name='usuario_delete'),
+    path('usuarios/', UsuarioListView.as_view(), name='usuario_list'),
+    path('usuarios/crear/', UsuarioCreateView.as_view(), name='usuario_create'),
+    path('usuarios/editar/<int:pk>/', UsuarioUpdateView.as_view(), name='usuario_update'),
+    path('usuarios/eliminar/<int:pk>/', UsuarioDeleteView.as_view(), name='usuario_delete'),
 
     # MONEDA
     path('moneda/', MonedaListView.as_view(), name='moneda_list'),
@@ -28,7 +29,7 @@ urlpatterns = [
     # CARTOLA
     path('cartola/<int:usuario_id>/', CartolaUsuarioView.as_view(), name='cartola_usuario'),
 
-    # BENEFICIARIO (CRUD COMPLETO)
+    # BENEFICIARIO
     path('beneficiario/', BeneficiarioListView.as_view(), name='beneficiario_list'),
     path('beneficiario/crear/', BeneficiarioCreateView.as_view(), name='beneficiario_create'),
     path('beneficiario/editar/<int:pk>/', BeneficiarioUpdateView.as_view(), name='beneficiario_update'),
