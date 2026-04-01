@@ -1,16 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<title>Eliminar Moneda</title>
 
+<h2>Eliminar Moneda</h2>
 
+<div style="
+    border:2px solid red;
+    padding:15px;
+    background-color:#ffe6e6;
+    margin-bottom:20px;
+">
 
-<h1>¿Eliminar moneda?</h1>
+    <strong>ATENCIÓN:</strong><br><br>
+
+    Estás a punto de eliminar una moneda.<br><br>
+
+    Esto eliminará TODAS las transacciones asociadas a esta moneda.<br>
+    Como consecuencia, también podrías permitir eliminar usuarios y beneficiarios relacionados.<br><br>
+
+    Esta acción NO se puede deshacer.
+
+</div>
+
+<p>¿Estás seguro que deseas eliminar la moneda <strong>{{ object.nombre_moneda }}</strong>?</p>
 
 <form method="post">
     {% csrf_token %}
-    <button type="submit">Confirmar</button>
+    <button type="submit">Sí, eliminar</button>
 </form>
+
+<br>
 
 <a href="{% url 'moneda_list' %}">Cancelar</a>
 
