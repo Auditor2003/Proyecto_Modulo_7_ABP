@@ -18,8 +18,10 @@
 {% elif not hay_monedas %}
 
     <div style="background:#fff3cd; padding:20px; border-radius:10px;">
-        <h3>Debe crear una moneda para operar</h3>
+        <h3>Configuración incompleta</h3>
+        <p>Debe crear una moneda inmediatamente después de crear el usuario para que la wallet funcione correctamente.</p>
         <p>Sin moneda no es posible realizar transacciones ni depósitos.</p>
+
         <a href="{% url 'moneda_create' %}" 
            style="background:#0a2540; color:white; padding:10px 15px; border-radius:8px; text-decoration:none;">
            Crear moneda
