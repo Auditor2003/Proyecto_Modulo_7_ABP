@@ -7,18 +7,33 @@
 <form method="post">
     {% csrf_token %}
 
+    <!-- ERRORES GENERALES DEL FORM -->
+    {% if form.non_field_errors %}
+        <div style="color:red; margin-bottom:10px;">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+
     <label>Usuario emisor:</label><br>
     {{ form.id_usuario_emisor }}<br><br>
 
     <label>Beneficiario:</label><br>
     {{ form.id_beneficiario }}<br><br>
 
-    <!-- PIDE MONEDA EN TRANSACCIONES -->
     <label>Moneda:</label><br>
     {{ form.currency_id }}<br><br>
 
     <label>Monto:</label><br>
-    {{ form.importe }}<br><br>
+    {{ form.importe }}<br>
+
+    <!-- ERROR DEL CAMPO MONTO -->
+    {% if form.importe.errors %}
+        <div style="color:red;">
+            {{ form.importe.errors }}
+        </div>
+    {% endif %}
+
+    <br>
 
     <button type="submit">Enviar</button>
 </form>
