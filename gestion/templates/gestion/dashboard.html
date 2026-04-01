@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Panel Principal</h2>
+
+{% if not hay_usuarios %}
+
+    <div style="background:#f8d7da; padding:20px; border-radius:10px;">
+        <h3>Debe crear un usuario para comenzar</h3>
+        <p>La wallet necesita al menos un usuario para operar.</p>
+        <a href="{% url 'usuario_create' %}" 
+           style="background:#0a2540; color:white; padding:10px 15px; border-radius:8px; text-decoration:none;">
+           Crear usuario
+        </a>
+    </div>
+
+{% elif not hay_monedas %}
+
+    <div style="background:#fff3cd; padding:20px; border-radius:10px;">
+        <h3>Debe crear una moneda para operar</h3>
+        <p>Sin moneda no es posible realizar transacciones ni depósitos.</p>
+        <a href="{% url 'moneda_create' %}" 
+           style="background:#0a2540; color:white; padding:10px 15px; border-radius:8px; text-decoration:none;">
+           Crear moneda
+        </a>
+    </div>
+
+{% else %}
+
+    <div style="background:#d4edda; padding:20px; border-radius:10px;">
+        <h3>Wallet operativa</h3>
+        <p>Ya puedes comenzar a enviar dinero, depositar y revisar movimientos.</p>
+    </div>
+
+    <br>
+
+    <h3>Acciones rápidas</h3>
+
+    <div style="display:flex; gap:15px; flex-wrap:wrap;">
+
+        <a href="{% url 'transaccion_create' %}" 
+           style="background:#2ec4ff; padding:15px; border-radius:10px; text-decoration:none; color:#0a2540; font-weight:bold;">
+           Enviar dinero
+        </a>
+
+        <a href="{% url 'deposito_create' %}" 
+           style="background:#2ec4ff; padding:15px; border-radius:10px; text-decoration:none; color:#0a2540; font-weight:bold;">
+           Depositar
+        </a>
+
+        <a href="{% url 'transaccion_list' %}" 
+           style="background:#2ec4ff; padding:15px; border-radius:10px; text-decoration:none; color:#0a2540; font-weight:bold;">
+           Ver movimientos
+        </a>
+
+    </div>
+
+{% endif %}
+
+{% endblock %}
