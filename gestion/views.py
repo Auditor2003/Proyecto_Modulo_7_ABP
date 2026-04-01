@@ -1,6 +1,6 @@
-# 
+
 # IMPORTACIONES
-# 
+ 
 
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
@@ -8,10 +8,7 @@ from django.contrib import messages
 from django.db import transaction
 from django.shortcuts import redirect
 
-# Importo modelos del sistema
 from .models import Usuario, Transaccion, Moneda, Beneficiario
-
-# Importo formularios
 from .forms import UsuarioForm, TransaccionForm, BeneficiarioForm, DepositoForm
 
 
@@ -19,14 +16,12 @@ from .forms import UsuarioForm, TransaccionForm, BeneficiarioForm, DepositoForm
 # USUARIO
 # 
 
-# Lista todos los usuarios
 class UsuarioListView(ListView):
     model = Usuario
     template_name = 'gestion/usuario_list.html'
     context_object_name = 'usuarios'
 
 
-# Crea un usuario
 class UsuarioCreateView(CreateView):
     model = Usuario
     template_name = 'gestion/usuario_form.html'
@@ -34,7 +29,6 @@ class UsuarioCreateView(CreateView):
     success_url = reverse_lazy('usuario_list')
 
 
-# Edita un usuario
 class UsuarioUpdateView(UpdateView):
     model = Usuario
     template_name = 'gestion/usuario_form.html'
@@ -42,17 +36,15 @@ class UsuarioUpdateView(UpdateView):
     success_url = reverse_lazy('usuario_list')
 
 
-# Elimina un usuario (con validación)
 class UsuarioDeleteView(DeleteView):
     model = Usuario
     template_name = 'gestion/usuario_confirm_delete.html'
     success_url = reverse_lazy('usuario_list')
 
-    # Evito eliminar usuarios con transacciones
+    #  Evito eliminar usuarios con transacciones
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
 
-        # Si el usuario tiene transacciones, bloqueo eliminación
         if Transaccion.objects.filter(id_usuario_emisor=self.object).exists():
             messages.error(
                 request,
@@ -67,14 +59,12 @@ class UsuarioDeleteView(DeleteView):
 # MONEDA
 # 
 
-# Lista monedas
 class MonedaListView(ListView):
     model = Moneda
     template_name = 'gestion/moneda_list.html'
     context_object_name = 'monedas'
 
 
-# Crear moneda
 class MonedaCreateView(CreateView):
     model = Moneda
     template_name = 'gestion/moneda_form.html'
@@ -82,7 +72,6 @@ class MonedaCreateView(CreateView):
     success_url = reverse_lazy('moneda_list')
 
 
-# Editar moneda
 class MonedaUpdateView(UpdateView):
     model = Moneda
     template_name = 'gestion/moneda_form.html'
@@ -90,7 +79,6 @@ class MonedaUpdateView(UpdateView):
     success_url = reverse_lazy('moneda_list')
 
 
-# Eliminar moneda
 class MonedaDeleteView(DeleteView):
     model = Moneda
     template_name = 'gestion/moneda_confirm_delete.html'
@@ -101,18 +89,16 @@ class MonedaDeleteView(DeleteView):
 # BENEFICIARIO
 # 
 
-# Lista beneficiarios (excluye el técnico "DEPOSITO")
 class BeneficiarioListView(ListView):
     model = Beneficiario
     template_name = 'gestion/beneficiario_list.html'
     context_object_name = 'beneficiarios'
 
-    #  Oculto el beneficiario usado internamente para depósitos
+    #  Oculto el beneficiario DEPOSITO
     def get_queryset(self):
         return Beneficiario.objects.exclude(nombre="DEPOSITO")
 
 
-# Crear beneficiario
 class BeneficiarioCreateView(CreateView):
     model = Beneficiario
     form_class = BeneficiarioForm
@@ -120,7 +106,6 @@ class BeneficiarioCreateView(CreateView):
     success_url = reverse_lazy('beneficiario_list')
 
 
-# Editar beneficiario
 class BeneficiarioUpdateView(UpdateView):
     model = Beneficiario
     form_class = BeneficiarioForm
@@ -128,13 +113,12 @@ class BeneficiarioUpdateView(UpdateView):
     success_url = reverse_lazy('beneficiario_list')
 
 
-# Eliminar beneficiario con validación
 class BeneficiarioDeleteView(DeleteView):
     model = Beneficiario
     template_name = 'gestion/beneficiario_confirm_delete.html'
     success_url = reverse_lazy('beneficiario_list')
 
-    # No eliminar si tiene transacciones
+    #  No eliminar si tiene transacciones
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
 
@@ -152,14 +136,12 @@ class BeneficiarioDeleteView(DeleteView):
 # TRANSACCIONES
 # 
 
-# Lista historial de transacciones
 class TransaccionListView(ListView):
     model = Transaccion
     template_name = 'gestion/transaccion_list.html'
     context_object_name = 'transacciones'
 
 
-# Crear transacción (envío de dinero)
 class TransaccionCreateView(CreateView):
     model = Transaccion
     form_class = TransaccionForm
@@ -167,26 +149,31 @@ class TransaccionCreateView(CreateView):
     success_url = reverse_lazy('transaccion_list')
 
     def form_valid(self, form):
-        # 🔹 Obtengo datos
         emisor = form.cleaned_data['id_usuario_emisor']
         importe = form.cleaned_data['importe']
 
-        # Valido saldo suficiente
+        #  VALIDACIÓN SALDO
         if emisor.saldo < importe:
-            messages.error(self.request, "Saldo insuficiente.")
+            messages.error(
+                self.request,
+                f"Saldo insuficiente. Saldo actual: {emisor.saldo}"
+            )
             return self.form_invalid(form)
 
         try:
-            # Transacción segura
             with transaction.atomic():
-                # Resto saldo al emisor
+                #  Descuento saldo
                 emisor.saldo -= importe
                 emisor.save()
 
-                # Guardo la transacción
+                #  Guardo transacción
                 response = super().form_valid(form)
 
-            messages.success(self.request, "Transacción realizada correctamente.")
+            messages.success(
+                self.request,
+                "Transacción realizada correctamente."
+            )
+
             return response
 
         except Exception as e:
@@ -204,14 +191,12 @@ class DepositoCreateView(FormView):
     success_url = reverse_lazy('usuario_list')
 
     def form_valid(self, form):
-        # 🔹 Datos del formulario
         usuario = form.cleaned_data['usuario']
         monto = form.cleaned_data['monto']
 
-        # Busco moneda existente
+        #  Validación moneda
         moneda = Moneda.objects.first()
 
-        # Si no hay moneda, bloqueo
         if not moneda:
             messages.error(
                 self.request,
@@ -222,16 +207,16 @@ class DepositoCreateView(FormView):
         try:
             with transaction.atomic():
 
-                # Creo o reutilizo beneficiario
+                #  Beneficiario técnico
                 beneficiario, _ = Beneficiario.objects.get_or_create(
                     nombre="DEPOSITO"
                 )
 
-                # Aumento saldo del usuario
+                #  Aumento saldo
                 usuario.saldo += monto
                 usuario.save()
 
-                # Registro la transacción
+                #  Registro transacción
                 Transaccion.objects.create(
                     id_usuario_emisor=usuario,
                     id_beneficiario=beneficiario,
@@ -239,7 +224,6 @@ class DepositoCreateView(FormView):
                     importe=monto
                 )
 
-            # Mensaje de éxito
             messages.success(
                 self.request,
                 f"Depósito realizado correctamente. Nuevo saldo: {usuario.saldo}"
@@ -259,20 +243,17 @@ class DepositoCreateView(FormView):
 # CARTOLA
 # 
 
-# Muestra movimientos de un usuario
 class CartolaUsuarioView(ListView):
     model = Transaccion
     template_name = 'gestion/cartola.html'
     context_object_name = 'movimientos'
 
-    # Filtro por usuario
     def get_queryset(self):
         usuario_id = self.kwargs.get('usuario_id')
         return Transaccion.objects.filter(
             id_usuario_emisor_id=usuario_id
         ).order_by('-fecha_transaccion')
 
-    # Envío usuario al template
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         usuario_id = self.kwargs.get('usuario_id')
