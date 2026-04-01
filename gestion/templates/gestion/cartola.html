@@ -10,7 +10,7 @@
     <tr>
         <th>Fecha</th>
         <th>Tipo</th>
-        <th>Beneficiario</th> <!-- 🔥 NUEVA COLUMNA -->
+        <th>Beneficiario</th>
         <th>Detalle</th>
         <th>Monto</th>
     </tr>
@@ -19,17 +19,32 @@
     <tr>
         <td>{{ mov.fecha_transaccion }}</td>
 
-        {% if mov.id_beneficiario.nombre == "DEPOSITO" %}
-            <td>Depósito</td>
-            <td>--</td> <!-- 👈 No mostramos beneficiario técnico -->
-            <td>Carga de saldo</td>
-            <td>+ {{ mov.importe }}</td>
-        {% else %}
-            <td>Egreso</td>
-            <td>{{ mov.id_beneficiario.nombre }}</td> <!-- 🔥 AQUÍ -->
-            <td>Transferencia</td>
-            <td>- {{ mov.importe }}</td>
-        {% endif %}
+        <td>
+            {% if mov.id_beneficiario.nombre == "DEPOSITO" %}
+                Depósito
+            {% else %}
+                Egreso
+            {% endif %}
+        </td>
+
+        <!-- 🔥 SIEMPRE MOSTRAR BENEFICIARIO -->
+        <td>{{ mov.id_beneficiario.nombre }}</td>
+
+        <td>
+            {% if mov.id_beneficiario.nombre == "DEPOSITO" %}
+                Carga de saldo
+            {% else %}
+                Transferencia
+            {% endif %}
+        </td>
+
+        <td>
+            {% if mov.id_beneficiario.nombre == "DEPOSITO" %}
+                + {{ mov.importe }}
+            {% else %}
+                - {{ mov.importe }}
+            {% endif %}
+        </td>
 
     </tr>
     {% empty %}

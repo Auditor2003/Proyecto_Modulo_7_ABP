@@ -9,7 +9,7 @@
         <th>Fecha</th>
         <th>Usuario</th>
         <th>Tipo</th>
-        <th>Beneficiario</th> <!-- 🔥 NUEVO -->
+        <th>Beneficiario</th> 
         <th>Detalle</th>
         <th>Monto</th>
     </tr>
@@ -21,12 +21,12 @@
 
         {% if t.id_beneficiario.nombre == "DEPOSITO" %}
             <td>Depósito</td>
-            <td>--</td> <!-- 👈 oculto técnico -->
+            <td>--</td> 
             <td>Carga de saldo</td>
             <td>+ {{ t.importe }}</td>
         {% else %}
             <td>Egreso</td>
-            <td>{{ t.id_beneficiario.nombre }}</td> <!-- 🔥 AQUÍ -->
+            <td>{{ t.id_beneficiario.nombre }}</td> 
             <td>Transferencia</td>
             <td>- {{ t.importe }}</td>
         {% endif %}
