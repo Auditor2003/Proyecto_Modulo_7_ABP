@@ -2,40 +2,27 @@
 
 {% block content %}
 
-<!-- Estoy creando una transacción desde la interfaz -->
-
-<h1>Crear Transacción</h1>
+<h2>Enviar dinero</h2>
 
 <form method="post">
     {% csrf_token %}
 
-    <!-- Selecciono emisor -->
-    <p>
-        <label>Emisor:</label><br>
-        {{ form.id_usuario_emisor }}
-    </p>
+    <label>Usuario emisor:</label><br>
+    {{ form.id_usuario_emisor }}<br><br>
 
-    <!-- Selecciono beneficiario o creo uno -->
-    <p>
-        <label>Beneficiario:</label><br>
-        {{ form.id_beneficiario }}
-        <br>
-        <a href="{% url 'beneficiario_create' %}">+ Crear beneficiario</a>
-    </p>
+    <label>Beneficiario:</label><br>
+    {{ form.id_beneficiario }}<br><br>
 
-    <!-- Selecciono moneda -->
-    <p>
-        <label>Moneda:</label><br>
-        {{ form.currency_id }}
-    </p>
+    <!-- PIDE MONEDA EN TRANSACCIONES -->
+    <label>Moneda:</label><br>
+    {{ form.currency_id }}<br><br>
 
-    <!-- Ingreso monto -->
-    <p>
-        <label>Importe:</label><br>
-        {{ form.importe }}
-    </p>
+    <label>Monto:</label><br>
+    {{ form.importe }}<br><br>
 
     <button type="submit">Enviar</button>
 </form>
+
+<a href="{% url 'transaccion_list' %}">Volver</a>
 
 {% endblock %}
