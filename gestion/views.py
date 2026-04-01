@@ -9,6 +9,8 @@ from .models import Usuario, Transaccion, Moneda, Beneficiario
 from .forms import UsuarioForm, TransaccionForm, BeneficiarioForm, DepositoForm
 
 
+# USUARIO
+
 class UsuarioListView(ListView):
     model = Usuario
     template_name = 'gestion/usuario_list.html'
@@ -44,6 +46,8 @@ class UsuarioDeleteView(DeleteView):
         return super().post(request, *args, **kwargs)
 
 
+# MONEDA
+
 class MonedaListView(ListView):
     model = Moneda
     template_name = 'gestion/moneda_list.html'
@@ -69,6 +73,8 @@ class MonedaDeleteView(DeleteView):
     template_name = 'gestion/moneda_confirm_delete.html'
     success_url = reverse_lazy('moneda_list')
 
+
+# BENEFICIARIO
 
 class BeneficiarioListView(ListView):
     model = Beneficiario
@@ -108,6 +114,8 @@ class BeneficiarioDeleteView(DeleteView):
         return super().post(request, *args, **kwargs)
 
 
+# TRANSACCIONES
+
 class TransaccionListView(ListView):
     model = Transaccion
     template_name = 'gestion/transaccion_list.html'
@@ -137,6 +145,8 @@ class TransaccionCreateView(CreateView):
         messages.success(self.request, "Transacción realizada correctamente")
         return response
 
+
+# DEPOSITO
 
 class DepositoCreateView(FormView):
     template_name = 'gestion/deposito_form.html'
@@ -169,6 +179,28 @@ class DepositoCreateView(FormView):
         messages.success(self.request, "Depósito realizado correctamente")
         return super().form_valid(form)
 
+
+# CARTOLA (RESTAURADA)
+
+class CartolaUsuarioView(ListView):
+    model = Transaccion
+    template_name = 'gestion/cartola.html'
+    context_object_name = 'movimientos'
+
+    def get_queryset(self):
+        usuario_id = self.kwargs.get('usuario_id')
+        return Transaccion.objects.filter(
+            id_usuario_emisor_id=usuario_id
+        ).order_by('-fecha_transaccion')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        usuario_id = self.kwargs.get('usuario_id')
+        context['usuario'] = Usuario.objects.get(user_id=usuario_id)
+        return context
+
+
+# DASHBOARD
 
 class DashboardView(ListView):
     model = Usuario
