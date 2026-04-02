@@ -2,39 +2,47 @@
 
 {% block content %}
 
-<h2>Historial de transacciones</h2>
+<div class="card">
 
-<table border="1">
-    <tr>
-        <th>Fecha</th>
-        <th>Usuario</th>
-        <th>Tipo</th>
-        <th>Beneficiario</th> 
-        <th>Detalle</th>
-        <th>Monto</th>
-    </tr>
+    <h2>Movimientos</h2>
 
-    {% for t in transacciones %}
-    <tr>
-        <td>{{ t.fecha_transaccion }}</td>
-        <td>{{ t.id_usuario_emisor.nombre }}</td>
+    <a href="{% url 'transaccion_create' %}" class="nav-btn primary">
+        + Nueva transacción
+    </a>
 
-        {% if t.id_beneficiario.nombre == "DEPOSITO" %}
-            <td>Depósito</td>
-            <td>--</td> 
-            <td>Carga de saldo</td>
-            <td>+ {{ t.importe }}</td>
-        {% else %}
-            <td>Egreso</td>
-            <td>{{ t.id_beneficiario.nombre }}</td> 
-            <td>Transferencia</td>
-            <td>- {{ t.importe }}</td>
-        {% endif %}
+    <table style="width:100%; margin-top:15px; border-collapse:collapse;">
+        <thead style="background:#f1f1f1;">
+            <tr>
+                <th>Fecha</th>
+                <th>Usuario</th>
+                <th>Tipo</th>
+                <th>Beneficiario</th>
+                <th>Monto</th>
+            </tr>
+        </thead>
 
-    </tr>
-    {% endfor %}
-</table>
+        <tbody>
+        {% for t in transacciones %}
+        <tr style="border-bottom:1px solid #ddd;">
+            <td>{{ t.fecha_transaccion }}</td>
+            <td>{{ t.id_usuario_emisor.nombre }}</td>
 
-<a href="{% url 'transaccion_create' %}">Nueva transacción</a>
+            {% if t.id_beneficiario.nombre == "DEPOSITO" %}
+                <td style="color:green;">Depósito</td>
+                <td>--</td>
+                <td style="color:green;">+ ${{ t.importe }}</td>
+            {% else %}
+                <td style="color:red;">Egreso</td>
+                <td>{{ t.id_beneficiario.nombre }}</td>
+                <td style="color:red;">- ${{ t.importe }}</td>
+            {% endif %}
+
+        </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
 
 {% endblock %}

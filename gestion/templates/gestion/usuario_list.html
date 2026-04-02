@@ -2,28 +2,50 @@
 
 {% block content %}
 
-<h2>Usuarios</h2>
+<div class="card">
 
-<table border="1">
-    <tr>
-        <th>Nombre</th>
-        <th>Saldo</th>
-        <th>Acciones</th>
-    </tr>
+    <h2>Usuarios</h2>
 
-    {% for usuario in usuarios %}
-    <tr>
-        <td>{{ usuario.nombre }}</td>
-        <td>{{ usuario.saldo }}</td>
-        <td>
-            <a href="{% url 'usuario_update' usuario.user_id %}">Editar</a>
-            <a href="{% url 'usuario_delete' usuario.user_id %}">Eliminar</a>
-            <a href="{% url 'cartola_usuario' usuario.user_id %}">Cartola</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+    <a href="{% url 'usuario_create' %}" class="nav-btn primary">
+        + Crear usuario
+    </a>
 
-<a href="{% url 'usuario_create' %}">Crear usuario</a>
+    <table style="width:100%; margin-top:15px; border-collapse:collapse;">
+        <thead style="background:#f1f1f1;">
+            <tr>
+                <th style="padding:10px;">Nombre</th>
+                <th>Saldo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for usuario in usuarios %}
+        <tr style="border-bottom:1px solid #ddd;">
+            <td style="padding:10px;">{{ usuario.nombre }}</td>
+            <td>${{ usuario.saldo }}</td>
+            <td>
+
+                <a href="{% url 'usuario_update' usuario.user_id %}" class="nav-btn">Editar</a>
+
+                <a href="{% url 'usuario_delete' usuario.user_id %}" class="nav-btn">Eliminar</a>
+
+                <a href="{% url 'cartola_usuario' usuario.user_id %}" class="nav-btn primary">
+                    Ver cartola
+                </a>
+
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3" style="padding:15px;">
+                No hay usuarios registrados
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
 
 {% endblock %}

@@ -1,34 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<title>Monedas</title>
 
+<div class="card">
 
+    <h2>Monedas</h2>
 
-<h1>Listado de Monedas</h1>
+    <a href="{% url 'moneda_create' %}" class="nav-btn primary">
+        + Nueva moneda
+    </a>
 
-<!-- Link para crear nueva moneda -->
-<a href="{% url 'moneda_create' %}">Nueva Moneda</a>
+    <ul style="margin-top:15px;">
+        {% for m in monedas %}
+        <li style="margin-bottom:10px;">
+            <strong>{{ m.nombre_moneda }}</strong> ({{ m.simbolo }})
 
-<ul>
-    {% for m in monedas %}
-        <li>
-            {{ m.nombre_moneda }} ({{ m.simbolo }})
-
-            <!-- Editar -->
-            <a href="{% url 'moneda_update' m.pk %}">Editar</a>
-
-            <!-- Eliminar -->
-            <a href="{% url 'moneda_delete' m.pk %}">Eliminar</a>
+            <a href="{% url 'moneda_update' m.pk %}" class="nav-btn">Editar</a>
+            <a href="{% url 'moneda_delete' m.pk %}" class="nav-btn">Eliminar</a>
         </li>
-    {% empty %}
+        {% empty %}
         <li>No hay monedas registradas</li>
-    {% endfor %}
-</ul>
+        {% endfor %}
+    </ul>
 
-<br>
-
-<!-- Volver -->
-<a href="{% url 'usuario_list' %}">Volver</a>
+</div>
 
 {% endblock %}

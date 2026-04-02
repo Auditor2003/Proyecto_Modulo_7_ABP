@@ -2,58 +2,59 @@
 
 {% block content %}
 
-<h2>Cartola de {{ usuario.nombre }}</h2>
+<div class="card">
 
-<h3>Saldo actual: {{ usuario.saldo }}</h3>
+    <h2>Cartola de {{ usuario.nombre }}</h2>
 
-<table border="1">
-    <tr>
-        <th>Fecha</th>
-        <th>Tipo</th>
-        <th>Beneficiario</th>
-        <th>Detalle</th>
-        <th>Monto</th>
-    </tr>
+    <div style="
+        margin:15px 0;
+        padding:15px;
+        border-radius:10px;
+        background:#f1f5f9;
+    ">
+        <strong>Saldo actual:</strong>
+        <span style="font-size:20px;">${{ usuario.saldo }}</span>
+    </div>
 
-    {% for mov in movimientos %}
-    <tr>
-        <td>{{ mov.fecha_transaccion }}</td>
+    <table style="width:100%; border-collapse:collapse;">
+        <thead style="background:#f1f1f1;">
+            <tr>
+                <th>Fecha</th>
+                <th>Tipo</th>
+                <th>Detalle</th>
+                <th>Monto</th>
+            </tr>
+        </thead>
 
-        <td>
+        <tbody>
+        {% for mov in movimientos %}
+        <tr style="border-bottom:1px solid #ddd;">
+
+            <td>{{ mov.fecha_transaccion }}</td>
+
             {% if mov.id_beneficiario.nombre == "DEPOSITO" %}
-                Depósito
+                <td style="color:green;">Depósito</td>
+                <td>Carga de saldo</td>
+                <td style="color:green;">+ ${{ mov.importe }}</td>
             {% else %}
-                Egreso
+                <td style="color:red;">Egreso</td>
+                <td>{{ mov.id_beneficiario.nombre }}</td>
+                <td style="color:red;">- ${{ mov.importe }}</td>
             {% endif %}
-        </td>
 
-        <!-- 🔥 SIEMPRE MOSTRAR BENEFICIARIO -->
-        <td>{{ mov.id_beneficiario.nombre }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" style="padding:15px;">
+                No hay movimientos
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-        <td>
-            {% if mov.id_beneficiario.nombre == "DEPOSITO" %}
-                Carga de saldo
-            {% else %}
-                Transferencia
-            {% endif %}
-        </td>
+    <a href="{% url 'usuario_list' %}" class="back-btn">← Volver</a>
 
-        <td>
-            {% if mov.id_beneficiario.nombre == "DEPOSITO" %}
-                + {{ mov.importe }}
-            {% else %}
-                - {{ mov.importe }}
-            {% endif %}
-        </td>
-
-    </tr>
-    {% empty %}
-    <tr>
-        <td colspan="5">No hay movimientos</td>
-    </tr>
-    {% endfor %}
-</table>
-
-<a href="{% url 'usuario_list' %}">Volver</a>
+</div>
 
 {% endblock %}

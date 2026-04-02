@@ -2,23 +2,31 @@
 
 {% block content %}
 
-<h1>Beneficiarios</h1>
+<div class="card">
 
-<ul>
-    {% for b in beneficiarios %}
-        <li>
+    <h2>Beneficiarios</h2>
+
+    <a href="{% url 'beneficiario_create' %}" class="nav-btn primary">
+        + Crear beneficiario
+    </a>
+
+    <ul style="margin-top:15px;">
+        {% for b in beneficiarios %}
+        <li style="margin-bottom:10px;">
             {{ b.nombre }}
 
-            <a href="{% url 'beneficiario_update' b.pk %}">Editar</a>
+            <a href="{% url 'beneficiario_update' b.pk %}" class="nav-btn">Editar</a>
 
             <form action="{% url 'beneficiario_delete' b.pk %}" method="post" style="display:inline;">
                 {% csrf_token %}
-                <button type="submit">Eliminar</button>
+                <button class="nav-btn">Eliminar</button>
             </form>
         </li>
-    {% endfor %}
-</ul>
+        {% empty %}
+        <li>No hay beneficiarios registrados</li>
+        {% endfor %}
+    </ul>
 
-<a href="{% url 'beneficiario_create' %}">Crear nuevo beneficiario</a>
+</div>
 
 {% endblock %}
