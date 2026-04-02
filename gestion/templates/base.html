@@ -20,39 +20,37 @@ nav {
     align-items:center;
 }
 
-/* LOGO ANIMADO */
+/* LOGO MEJORADO (SUAVE Y LIMPIO) */
 .logo {
     color:white;
     font-weight:bold;
     font-size:18px;
     margin-right:20px;
-    position:relative;
     cursor:pointer;
-    transition:0.3s;
+    position:relative;
+    transition:0.25s ease;
 }
 
+/* subrayado animado */
 .logo::after {
     content:'';
     position:absolute;
-    top:0;
-    left:-100%;
-    width:100%;
-    height:100%;
-    background:linear-gradient(
-        120deg,
-        transparent,
-        rgba(255,255,255,0.6),
-        transparent
-    );
-    transition:0.5s;
+    left:0;
+    bottom:-3px;
+    width:0%;
+    height:2px;
+    background:#2ec4ff;
+    transition:0.25s ease;
+}
+
+/* hover elegante */
+.logo:hover {
+    color:#2ec4ff;
+    transform:scale(1.05);
 }
 
 .logo:hover::after {
-    left:100%;
-}
-
-.logo:hover {
-    text-shadow:0 0 8px rgba(255,255,255,0.6);
+    width:100%;
 }
 
 /* CONTENEDORES NAV */
