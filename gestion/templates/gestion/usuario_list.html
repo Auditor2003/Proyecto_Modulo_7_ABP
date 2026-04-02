@@ -26,9 +26,15 @@
             <td>${{ usuario.saldo }}</td>
             <td>
 
-                <a href="{% url 'usuario_update' usuario.user_id %}" class="nav-btn">Editar</a>
+                <a href="{% url 'usuario_update' usuario.user_id %}" class="nav-btn primary">
+                    Editar
+                </a>
 
-                <a href="{% url 'usuario_delete' usuario.user_id %}" class="nav-btn">Eliminar</a>
+                <a href="{% url 'usuario_delete' usuario.user_id %}" 
+                   class="nav-btn" 
+                   style="background-color:#ff4d4f; color:white;">
+                    Eliminar
+                </a>
 
                 <a href="{% url 'cartola_usuario' usuario.user_id %}" class="nav-btn primary">
                     Ver cartola
