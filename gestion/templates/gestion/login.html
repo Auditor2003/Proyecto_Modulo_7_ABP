@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div style="max-width:400px; margin:60px auto;">
+
+    <div class="card">
+        <h2 style="margin-bottom:20px;">Iniciar sesión</h2>
+
+        {% if form.errors %}
+            <div style="color:red; margin-bottom:10px;">
+                Usuario o contraseña incorrectos
+            </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div style="margin-bottom:10px;">
+                <label>Usuario</label><br>
+                {{ form.username }}
+            </div>
+
+            <div style="margin-bottom:15px;">
+                <label>Contraseña</label><br>
+                {{ form.password }}
+            </div>
+
+            <button type="submit" style="
+                width:100%;
+                padding:10px;
+                background:#0a2540;
+                color:white;
+                border:none;
+                border-radius:8px;
+                font-weight:bold;
+            ">
+                Entrar
+            </button>
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
