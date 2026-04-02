@@ -29,9 +29,11 @@ nav a {
     background:#ff4d4d;
     padding:6px 10px;
     border-radius:6px;
+    color:white;
 }
 
 .container { padding:20px; }
+
 .card {
     background:white;
     padding:20px;
@@ -39,7 +41,10 @@ nav a {
     box-shadow:0 5px 10px rgba(0,0,0,0.1);
     transition:0.3s;
 }
-.card:hover { transform:translateY(-5px); }
+
+.card:hover {
+    transform:translateY(-5px);
+}
 </style>
 
 </head>
@@ -55,10 +60,28 @@ nav a {
 </div>
 
 <div>
-<a href="{% url 'beneficiario_list' %}">Beneficiarios</a>
-<a href="{% url 'moneda_list' %}">Monedas</a>
-<a href="{% url 'usuario_list' %}">Usuarios</a>
-<a href="#" class="logout">Cerrar sesión</a>
+{% if user.is_authenticated %}
+
+    <span style="color:white; margin-right:10px;">
+        {{ user.username }}
+    </span>
+
+    <a href="{% url 'beneficiario_list' %}">Beneficiarios</a>
+    <a href="{% url 'moneda_list' %}">Monedas</a>
+    <a href="{% url 'usuario_list' %}">Usuarios</a>
+
+    <form method="post" action="{% url 'logout' %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="logout" style="border:none; cursor:pointer;">
+            Cerrar sesión
+        </button>
+    </form>
+
+{% else %}
+
+    <a href="{% url 'login' %}">Iniciar sesión</a>
+
+{% endif %}
 </div>
 </nav>
 
