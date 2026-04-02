@@ -1,46 +1,125 @@
 {% extends 'base.html' %}
+
 {% block content %}
 
-<h2>Panel Principal</h2>
+<h2 style="margin-bottom:10px;">👋 Bienvenido{% if usuario_activo %}, {{ usuario_activo.nombre }}{% endif %}</h2>
+<p style="color:#555; margin-bottom:20px;">Panel general de tu billetera digital</p>
 
+<!-- ALERTA SUAVE -->
 {% if not hay_usuarios or not hay_monedas %}
-<div style="background:#fff3cd;padding:10px;border-radius:8px;">
+<div style="
+    background:#fff3cd;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+    border-left:6px solid #ffc107;
+    font-weight:500;
+">
     {% if not hay_usuarios %}
-        Crear usuario
-    {% else %}
-        Crear moneda
+        ⚠️ Debes crear un usuario para comenzar
+        <a href="{% url 'usuario_create' %}" class="mini-btn">Crear usuario</a>
+    {% elif not hay_monedas %}
+        ⚠️ Luego de crear usuario, debes crear una moneda
+        <a href="{% url 'moneda_create' %}" class="mini-btn">Crear moneda</a>
     {% endif %}
 </div>
 {% endif %}
 
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;">
 
-<div class="card">
-<h3>Usuarios</h3>
-<h2>{{ usuarios|length }}</h2>
-<p>Total registrados</p>
+<!-- GRID -->
+<div class="grid">
+
+    <!-- USUARIOS -->
+    <div class="card">
+        <h3>👤 Usuarios</h3>
+        <h1>{{ usuarios|length }}</h1>
+        <p>Total registrados</p>
+    </div>
+
+    <!-- ACCIONES -->
+    <div class="card">
+        <h3>⚡ Acciones rápidas</h3>
+
+        <a href="{% url 'transaccion_create' %}" class="action-btn">💸 Enviar dinero</a>
+        <a href="{% url 'deposito_create' %}" class="action-btn">💰 Depositar</a>
+        <a href="{% url 'transaccion_list' %}" class="action-btn">📊 Movimientos</a>
+    </div>
+
+    <!-- INDICADORES -->
+    <div class="card highlight">
+        <h3>📈 Indicadores Chile</h3>
+        <p>UF: <strong>{{ uf }}</strong></p>
+        <p>Dólar: <strong>{{ dolar }}</strong></p>
+        <p>Euro: <strong>{{ euro }}</strong></p>
+    </div>
+
+    <!-- CLIMA -->
+    <div class="card">
+        <h3>🌤 Clima</h3>
+        <p>Santiago</p>
+        <p><strong>22°C - Soleado</strong></p>
+    </div>
+
 </div>
 
-<div class="card">
-<h3>Acciones</h3>
-<a href="{% url 'transaccion_create' %}">Enviar</a><br>
-<a href="{% url 'deposito_create' %}">Depositar</a><br>
-<a href="{% url 'transaccion_list' %}">Movimientos</a>
-</div>
 
-<div class="card">
-<h3>Indicadores</h3>
-<p>UF: {{ uf }}</p>
-<p>Dólar: {{ dolar }}</p>
-<p>Euro: {{ euro }}</p>
-</div>
+<style>
 
-<div class="card">
-<h3>Clima</h3>
-<p>Santiago</p>
-<p>22°C</p>
-</div>
+/* GRID */
+.grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap:20px;
+}
 
-</div>
+/* CARDS */
+.card {
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 6px 15px rgba(0,0,0,0.08);
+    transition:0.3s;
+}
+
+.card:hover {
+    transform:translateY(-6px);
+    box-shadow:0 12px 25px rgba(0,0,0,0.12);
+}
+
+/* DESTACADO */
+.highlight {
+    border-top:5px solid #ffc107;
+}
+
+/* BOTONES */
+.action-btn {
+    display:block;
+    margin-top:10px;
+    background:#2ec4ff;
+    color:#0a2540;
+    padding:10px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:bold;
+    transition:0.2s;
+}
+
+.action-btn:hover {
+    background:#00a8e8;
+    color:white;
+}
+
+/* MINI BOTON */
+.mini-btn {
+    margin-left:10px;
+    background:#0a2540;
+    color:white;
+    padding:6px 10px;
+    border-radius:8px;
+    text-decoration:none;
+    font-size:13px;
+}
+
+</style>
 
 {% endblock %}
