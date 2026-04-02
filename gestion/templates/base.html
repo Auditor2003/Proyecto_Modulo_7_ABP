@@ -11,27 +11,82 @@ body {
     background:linear-gradient(135deg,#e0f7ff,#ffffff);
 }
 
+/* NAVBAR */
 nav {
     background:#0a2540;
-    padding:15px;
+    padding:12px 25px;
     display:flex;
     justify-content:space-between;
+    align-items:center;
 }
 
-nav a {
+/* LOGO */
+.logo {
     color:white;
-    text-decoration:none;
-    margin-right:10px;
     font-weight:bold;
+    font-size:18px;
+    margin-right:20px;
 }
 
-.logout {
-    background:#ff4d4d;
-    padding:6px 10px;
-    border-radius:6px;
+/* CONTENEDORES */
+.nav-left, .nav-right {
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+/* BOTONES NAV */
+.nav-btn {
+    background:transparent;
+    color:white;
+    border:1px solid rgba(255,255,255,0.3);
+    padding:6px 12px;
+    border-radius:20px;
+    text-decoration:none;
+    font-size:14px;
+    transition:0.2s;
+}
+
+.nav-btn:hover {
+    background:white;
+    color:#0a2540;
+}
+
+/* BOTÓN PRINCIPAL */
+.nav-btn.primary {
+    background:#2ec4ff;
+    color:#0a2540;
+    border:none;
+}
+
+.nav-btn.primary:hover {
+    background:#00a8e8;
     color:white;
 }
 
+/* LOGOUT */
+.logout-btn {
+    background:#ff4d4d;
+    border:none;
+    color:white;
+    padding:6px 12px;
+    border-radius:20px;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.logout-btn:hover {
+    background:#cc0000;
+}
+
+/* USER */
+.user {
+    color:white;
+    font-size:14px;
+    margin-right:5px;
+}
+
+/* CONTENIDO */
 .container { padding:20px; }
 
 .card {
@@ -52,38 +107,39 @@ nav a {
 <body>
 
 <nav>
-<div>
-<a href="{% url 'home' %}">Alke Wallet</a>
-<a href="{% url 'home' %}">Inicio</a>
-<a href="{% url 'transaccion_create' %}">Enviar</a>
-<a href="{% url 'deposito_create' %}">Depositar</a>
+
+<div class="nav-left">
+    <span class="logo">Alke Wallet</span>
+
+    <a href="{% url 'home' %}" class="nav-btn">Inicio</a>
+    <a href="{% url 'transaccion_create' %}" class="nav-btn primary">Enviar</a>
+    <a href="{% url 'deposito_create' %}" class="nav-btn">Depositar</a>
 </div>
 
-<div>
+<div class="nav-right">
+
 {% if user.is_authenticated %}
 
-    <span style="color:white; margin-right:10px;">
-        {{ user.username }}
-    </span>
+    <span class="user">{{ user.username }}</span>
 
-    <a href="{% url 'beneficiario_list' %}">Beneficiarios</a>
-    <a href="{% url 'moneda_list' %}">Monedas</a>
-    <a href="{% url 'usuario_list' %}">Usuarios</a>
+    <a href="{% url 'beneficiario_list' %}" class="nav-btn">Beneficiarios</a>
+    <a href="{% url 'moneda_list' %}" class="nav-btn">Monedas</a>
+    <a href="{% url 'usuario_list' %}" class="nav-btn">Usuarios</a>
 
     <form method="post" action="{% url 'logout' %}" style="display:inline;">
         {% csrf_token %}
-        <button type="submit" class="logout" style="border:none; cursor:pointer;">
-            Cerrar sesión
-        </button>
+        <button type="submit" class="logout-btn">Salir</button>
     </form>
 
 {% else %}
 
-    <a href="{% url 'login' %}">Iniciar sesión</a>
-    <a href="{% url 'register' %}">Registrarse</a>
+    <a href="{% url 'login' %}" class="nav-btn">Iniciar sesión</a>
+    <a href="{% url 'register' %}" class="nav-btn primary">Registrarse</a>
 
 {% endif %}
+
 </div>
+
 </nav>
 
 <div class="container">
