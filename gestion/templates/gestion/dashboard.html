@@ -44,12 +44,17 @@
         <a href="{% url 'transaccion_list' %}" class="action-btn">Ver movimientos</a>
     </div>
 
-    <div class="card" style="border-left:6px solid #ffc107;">
-        <h3>Indicadores</h3>
-        <p>UF: <strong>{{ uf }}</strong></p>
-        <p>Dólar: <strong>{{ dolar }}</strong></p>
-        <p>Euro: <strong>{{ euro }}</strong></p>
-    </div>
+    <div class="card highlight">
+    <h3>📈 Indicadores Chile</h3>
+
+    <p style="margin-bottom:10px; color:#666;">
+        📅 {% now "l d \d\e F Y" %}
+    </p>
+
+    <p>💰 UF: <strong>{{ uf }}</strong></p>
+    <p>💵 Dólar: <strong>{{ dolar }}</strong></p>
+    <p>💶 Euro: <strong>{{ euro }}</strong></p>
+</div>
 
     <div class="card" style="border-left:6px solid #ff4d4d;">
         <h3>Clima</h3>
