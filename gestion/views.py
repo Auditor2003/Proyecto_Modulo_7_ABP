@@ -2,12 +2,29 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, F
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.db import transaction
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 import requests
 
 from .models import Usuario, Transaccion, Moneda, Beneficiario
 from .forms import UsuarioForm, TransaccionForm, BeneficiarioForm, DepositoForm
+
+
+# REGISTRO DE USUARIO DJANGO
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'register.html', {'form': form})
 
 
 # USUARIO
@@ -201,7 +218,7 @@ class CartolaUsuarioView(ListView):
         return context
 
 
-# DASHBOARD (PROTEGIDO)
+# DASHBOARD
 
 class DashboardView(LoginRequiredMixin, ListView):
     login_url = 'login'

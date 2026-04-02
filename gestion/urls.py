@@ -1,37 +1,30 @@
 from django.urls import path
-from .views import *
-
+from . import views
 
 urlpatterns = [
+    path('', views.DashboardView.as_view(), name='home'),
 
-    # HOME (dashboard principal)
-    path('', DashboardView.as_view(), name='home'),
+    path('register/', views.register, name='register'),
 
-    # USUARIO
-    path('usuarios/', UsuarioListView.as_view(), name='usuario_list'),
-    path('usuarios/crear/', UsuarioCreateView.as_view(), name='usuario_create'),
-    path('usuarios/editar/<int:pk>/', UsuarioUpdateView.as_view(), name='usuario_update'),
-    path('usuarios/eliminar/<int:pk>/', UsuarioDeleteView.as_view(), name='usuario_delete'),
+    path('usuarios/', views.UsuarioListView.as_view(), name='usuario_list'),
+    path('usuarios/crear/', views.UsuarioCreateView.as_view(), name='usuario_create'),
+    path('usuarios/editar/<int:pk>/', views.UsuarioUpdateView.as_view(), name='usuario_update'),
+    path('usuarios/eliminar/<int:pk>/', views.UsuarioDeleteView.as_view(), name='usuario_delete'),
 
-    # MONEDA
-    path('moneda/', MonedaListView.as_view(), name='moneda_list'),
-    path('moneda/crear/', MonedaCreateView.as_view(), name='moneda_create'),
-    path('moneda/editar/<int:pk>/', MonedaUpdateView.as_view(), name='moneda_update'),
-    path('moneda/eliminar/<int:pk>/', MonedaDeleteView.as_view(), name='moneda_delete'),
+    path('monedas/', views.MonedaListView.as_view(), name='moneda_list'),
+    path('monedas/crear/', views.MonedaCreateView.as_view(), name='moneda_create'),
+    path('monedas/editar/<int:pk>/', views.MonedaUpdateView.as_view(), name='moneda_update'),
+    path('monedas/eliminar/<int:pk>/', views.MonedaDeleteView.as_view(), name='moneda_delete'),
 
-    # TRANSACCIONES
-    path('transaccion/', TransaccionListView.as_view(), name='transaccion_list'),
-    path('transaccion/crear/', TransaccionCreateView.as_view(), name='transaccion_create'),
+    path('beneficiarios/', views.BeneficiarioListView.as_view(), name='beneficiario_list'),
+    path('beneficiarios/crear/', views.BeneficiarioCreateView.as_view(), name='beneficiario_create'),
+    path('beneficiarios/editar/<int:pk>/', views.BeneficiarioUpdateView.as_view(), name='beneficiario_update'),
+    path('beneficiarios/eliminar/<int:pk>/', views.BeneficiarioDeleteView.as_view(), name='beneficiario_delete'),
 
-    # DEPOSITO
-    path('deposito/', DepositoCreateView.as_view(), name='deposito_create'),
+    path('transacciones/', views.TransaccionListView.as_view(), name='transaccion_list'),
+    path('transacciones/crear/', views.TransaccionCreateView.as_view(), name='transaccion_create'),
 
-    # CARTOLA
-    path('cartola/<int:usuario_id>/', CartolaUsuarioView.as_view(), name='cartola_usuario'),
+    path('deposito/', views.DepositoCreateView.as_view(), name='deposito_create'),
 
-    # BENEFICIARIO
-    path('beneficiario/', BeneficiarioListView.as_view(), name='beneficiario_list'),
-    path('beneficiario/crear/', BeneficiarioCreateView.as_view(), name='beneficiario_create'),
-    path('beneficiario/editar/<int:pk>/', BeneficiarioUpdateView.as_view(), name='beneficiario_update'),
-    path('beneficiario/eliminar/<int:pk>/', BeneficiarioDeleteView.as_view(), name='beneficiario_delete'),
+    path('cartola/<int:usuario_id>/', views.CartolaUsuarioView.as_view(), name='cartola_usuario'),
 ]
