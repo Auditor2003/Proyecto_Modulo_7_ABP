@@ -2,16 +2,36 @@
 
 {% block content %}
 
-<h2>Depositar dinero</h2>
+<div style="max-width:500px; margin:40px auto;">
+    <div class="card">
 
-<form method="post">
-    {% csrf_token %}
+        <h2 style="margin-bottom:20px;">Depositar dinero</h2>
 
-    {{ form.as_p }}
+        <form method="post">
+            {% csrf_token %}
 
-    <button type="submit">Depositar</button>
-</form>
+            {{ form.as_p }}
 
-<a href="{% url 'usuario_list' %}">Volver</a>
+            <button type="submit" style="
+                width:100%;
+                padding:12px;
+                background:#28a745;
+                color:white;
+                border:none;
+                border-radius:10px;
+                font-weight:bold;
+                cursor:pointer;
+                margin-top:10px;
+            ">
+                Depositar
+            </button>
+        </form>
+
+        <a href="{% url 'usuario_list' %}" style="display:block; margin-top:15px;">
+            ← Volver
+        </a>
+
+    </div>
+</div>
 
 {% endblock %}

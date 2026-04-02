@@ -1,18 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<title>Moneda</title>
 
+<div style="max-width:500px; margin:40px auto;">
+    <div class="card">
 
+        <h2 style="margin-bottom:20px;">Crear Moneda</h2>
 
-<h1>Formulario Moneda</h1>
+        <form method="post">
+            {% csrf_token %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Guardar</button>
-</form>
+            {{ form.as_p }}
 
-<a href="{% url 'moneda_list' %}">Volver</a>
+            <button type="submit" style="
+                width:100%;
+                padding:12px;
+                background:#0a2540;
+                color:white;
+                border:none;
+                border-radius:10px;
+                font-weight:bold;
+                cursor:pointer;
+                margin-top:10px;
+            ">
+                Guardar
+            </button>
+        </form>
+
+        <a href="{% url 'moneda_list' %}" style="display:block; margin-top:15px;">
+            ← Volver
+        </a>
+
+    </div>
+</div>
 
 {% endblock %}

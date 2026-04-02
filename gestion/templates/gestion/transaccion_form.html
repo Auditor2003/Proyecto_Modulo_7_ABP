@@ -2,42 +2,58 @@
 
 {% block content %}
 
-<h2>Enviar dinero</h2>
+<div style="max-width:500px; margin:40px auto;">
+    <div class="card">
 
-<form method="post">
-    {% csrf_token %}
+        <h2 style="margin-bottom:20px;">Enviar dinero</h2>
 
-    <!-- ERRORES GENERALES DEL FORM -->
-    {% if form.non_field_errors %}
-        <div style="color:red; margin-bottom:10px;">
-            {{ form.non_field_errors }}
-        </div>
-    {% endif %}
+        <form method="post">
+            {% csrf_token %}
 
-    <label>Usuario emisor:</label><br>
-    {{ form.id_usuario_emisor }}<br><br>
+            {% if form.non_field_errors %}
+                <div style="color:red; margin-bottom:10px;">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
 
-    <label>Beneficiario:</label><br>
-    {{ form.id_beneficiario }}<br><br>
+            <label>Usuario emisor</label>
+            {{ form.id_usuario_emisor }}
 
-    <label>Moneda:</label><br>
-    {{ form.currency_id }}<br><br>
+            <label>Beneficiario</label>
+            {{ form.id_beneficiario }}
 
-    <label>Monto:</label><br>
-    {{ form.importe }}<br>
+            <label>Moneda</label>
+            {{ form.currency_id }}
 
-    <!-- ERROR DEL CAMPO MONTO -->
-    {% if form.importe.errors %}
-        <div style="color:red;">
-            {{ form.importe.errors }}
-        </div>
-    {% endif %}
+            <label>Monto</label>
+            {{ form.importe }}
 
-    <br>
+            {% if form.importe.errors %}
+                <div style="color:red;">
+                    {{ form.importe.errors }}
+                </div>
+            {% endif %}
 
-    <button type="submit">Enviar</button>
-</form>
+            <button type="submit" style="
+                width:100%;
+                padding:12px;
+                background:#2ec4ff;
+                color:#0a2540;
+                border:none;
+                border-radius:10px;
+                font-weight:bold;
+                cursor:pointer;
+                margin-top:15px;
+            ">
+                Enviar
+            </button>
+        </form>
 
-<a href="{% url 'transaccion_list' %}">Volver</a>
+        <a href="{% url 'transaccion_list' %}" style="display:block; margin-top:15px;">
+            ← Volver
+        </a>
+
+    </div>
+</div>
 
 {% endblock %}

@@ -1,25 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<title>Crear Usuario</title>
 
+<div style="max-width:500px; margin:40px auto;">
+    <div class="card">
 
+        <h2 style="margin-bottom:20px;">Crear Usuario</h2>
 
-    <h1>Crear Usuario</h1>
+        <form method="post">
+            {% csrf_token %}
 
-    <!-- Aquí creo el formulario que Django genera automáticamente -->
-    <form method="post">
-        {% csrf_token %}
+            {{ form.as_p }}
 
-        <!-- Aquí renderizo todos los campos del modelo -->
-        {{ form.as_p }}
+            <button type="submit" style="
+                width:100%;
+                padding:12px;
+                background:#0a2540;
+                color:white;
+                border:none;
+                border-radius:10px;
+                font-weight:bold;
+                cursor:pointer;
+                margin-top:10px;
+            ">
+                Guardar
+            </button>
+        </form>
 
-        <button type="submit">Guardar</button>
-    </form>
+        <a href="{% url 'usuario_list' %}" style="display:block; margin-top:15px;">
+            ← Volver
+        </a>
 
-    <br>
-
-    <!-- Aquí dejo un enlace para volver a la lista -->
-    <a href="{% url 'usuario_list' %}">Volver a la lista</a>
+    </div>
+</div>
 
 {% endblock %}
