@@ -10,20 +10,32 @@
         + Crear beneficiario
     </a>
 
-    <ul style="margin-top:15px;">
+    <ul style="margin-top:20px; padding:0; list-style:none;">
         {% for b in beneficiarios %}
-        <li style="margin-bottom:10px;">
-            {{ b.nombre }}
+        <li style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #eee;">
 
-            <a href="{% url 'beneficiario_update' b.pk %}" class="nav-btn">Editar</a>
+            <span>{{ b.nombre }}</span>
 
-            <form action="{% url 'beneficiario_delete' b.pk %}" method="post" style="display:inline;">
-                {% csrf_token %}
-                <button class="nav-btn">Eliminar</button>
-            </form>
+            <div style="display:flex; gap:8px;">
+
+                <a href="{% url 'beneficiario_update' b.pk %}" 
+                   class="nav-btn primary">
+                    Editar
+                </a>
+
+                <form action="{% url 'beneficiario_delete' b.pk %}" method="post" style="margin:0;">
+                    {% csrf_token %}
+                    <button class="nav-btn danger">
+                        Eliminar
+                    </button>
+                </form>
+
+            </div>
+
         </li>
+
         {% empty %}
-        <li>No hay beneficiarios registrados</li>
+        <li style="margin-top:10px;">No hay beneficiarios registrados</li>
         {% endfor %}
     </ul>
 
