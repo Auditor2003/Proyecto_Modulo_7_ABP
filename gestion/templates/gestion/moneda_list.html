@@ -10,16 +10,32 @@
         + Nueva moneda
     </a>
 
-    <ul style="margin-top:15px;">
+    <ul style="margin-top:20px; padding:0; list-style:none;">
         {% for m in monedas %}
-        <li style="margin-bottom:10px;">
-            <strong>{{ m.nombre_moneda }}</strong> ({{ m.simbolo }})
+        <li style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #eee;">
 
-            <a href="{% url 'moneda_update' m.pk %}" class="nav-btn">Editar</a>
-            <a href="{% url 'moneda_delete' m.pk %}" class="nav-btn">Eliminar</a>
+            <span>
+                <strong>{{ m.nombre_moneda }}</strong> ({{ m.simbolo }})
+            </span>
+
+            <div style="display:flex; gap:8px;">
+
+                <a href="{% url 'moneda_update' m.pk %}" 
+                   class="nav-btn primary">
+                    Editar
+                </a>
+
+                <a href="{% url 'moneda_delete' m.pk %}" 
+                   class="nav-btn danger">
+                    Eliminar
+                </a>
+
+            </div>
+
         </li>
+
         {% empty %}
-        <li>No hay monedas registradas</li>
+        <li style="margin-top:10px;">No hay monedas registradas</li>
         {% endfor %}
     </ul>
 
