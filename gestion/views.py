@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.db import transaction
 from django.shortcuts import redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 import requests
 
 from .models import Usuario, Transaccion, Moneda, Beneficiario
@@ -180,7 +181,7 @@ class DepositoCreateView(FormView):
         return super().form_valid(form)
 
 
-# CARTOLA (RESTAURADA)
+# CARTOLA
 
 class CartolaUsuarioView(ListView):
     model = Transaccion
@@ -200,9 +201,10 @@ class CartolaUsuarioView(ListView):
         return context
 
 
-# DASHBOARD
+# DASHBOARD (PROTEGIDO)
 
-class DashboardView(ListView):
+class DashboardView(LoginRequiredMixin, ListView):
+    login_url = 'login'
     model = Usuario
     template_name = 'gestion/dashboard.html'
     context_object_name = 'usuarios'
