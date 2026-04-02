@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import Usuario, Moneda, Transaccion, Beneficiario
 
-# Register your models here.
+admin.site.register(Usuario)
+admin.site.register(Moneda)
+admin.site.register(Transaccion)
+admin.site.register(Beneficiario)
