@@ -133,43 +133,6 @@ Separación clara de responsabilidades:
 
 ---
 
-## Instalación y ejecución
-
-1. Clonar el repositorio:
-
-git clone https://github.com/Auditor2003/Proyecto_Modulo_7_ABP.git
-cd Proyecto_Modulo_7_ABP
-
-2. Crear entorno virtual:
-
-python -m venv venv
-
-3. Activar entorno:
-
-Windows:
-venv\Scripts\activate
-
-Mac/Linux:
-source venv/bin/activate
-
-4. Instalar dependencias:
-
-pip install django
-
-5. Ejecutar migraciones:
-
-python manage.py migrate
-
-6. Ejecutar servidor:
-
-python manage.py runserver
-
-7. Acceder en navegador:
-
-http://127.0.0.1:8000/
-
----
-
 ## Acceso al sistema
 
 - Crear usuario desde la opción "Registrarse"
@@ -219,10 +182,4 @@ Durante el desarrollo se priorizó:
 
 Diego Muñoz Lasanta
 
-Proyecto desarrollado como parte del diplomado en desarrollo web.
 
----
-
-## Conclusión
-
-Alke Wallet cumple con los requisitos académicos e incorpora mejoras que elevan la calidad del proyecto hacia un nivel profesional.
