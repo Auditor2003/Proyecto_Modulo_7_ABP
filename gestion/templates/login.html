@@ -3,44 +3,63 @@
 {% block content %}
 
 <div style="max-width:400px; margin:60px auto;">
-
     <div class="card">
+
         <h2 style="margin-bottom:20px;">Iniciar sesión</h2>
 
         {% if form.errors %}
-            <div style="color:red; margin-bottom:10px;">
-                Usuario o contraseña incorrectos
-            </div>
+        <div style="
+            background:#ffe0e0;
+            color:#a10000;
+            padding:10px;
+            border-radius:8px;
+            margin-bottom:15px;
+            font-size:14px;
+        ">
+            Usuario o contraseña incorrectos
+        </div>
         {% endif %}
 
         <form method="post">
             {% csrf_token %}
 
-            <div style="margin-bottom:10px;">
-                <label>Usuario</label><br>
-                {{ form.username }}
+            <div style="margin-bottom:15px;">
+                <label>Usuario</label>
+                <input type="text" name="username" required style="
+                    width:100%;
+                    padding:10px;
+                    border-radius:8px;
+                    border:1px solid #ccc;
+                    margin-top:5px;
+                ">
             </div>
 
-            <div style="margin-bottom:15px;">
-                <label>Contraseña</label><br>
-                {{ form.password }}
+            <div style="margin-bottom:20px;">
+                <label>Contraseña</label>
+                <input type="password" name="password" required style="
+                    width:100%;
+                    padding:10px;
+                    border-radius:8px;
+                    border:1px solid #ccc;
+                    margin-top:5px;
+                ">
             </div>
 
             <button type="submit" style="
                 width:100%;
-                padding:10px;
+                padding:12px;
                 background:#0a2540;
                 color:white;
                 border:none;
-                border-radius:8px;
+                border-radius:10px;
                 font-weight:bold;
+                cursor:pointer;
             ">
                 Entrar
             </button>
         </form>
 
     </div>
-
 </div>
 
 {% endblock %}
