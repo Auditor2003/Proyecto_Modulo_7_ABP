@@ -11,28 +11,36 @@
             {% csrf_token %}
 
             {% if form.non_field_errors %}
-                <div style="color:red; margin-bottom:10px;">
+                <div class="alert error">
                     {{ form.non_field_errors }}
                 </div>
             {% endif %}
 
-            <label>Usuario emisor</label>
-            {{ form.id_usuario_emisor }}
+            <div style="margin-bottom:15px;">
+                <label>Usuario emisor</label>
+                {{ form.id_usuario_emisor }}
+            </div>
 
-            <label>Beneficiario</label>
-            {{ form.id_beneficiario }}
+            <div style="margin-bottom:15px;">
+                <label>Beneficiario</label>
+                {{ form.id_beneficiario }}
+            </div>
 
-            <label>Moneda</label>
-            {{ form.currency_id }}
+            <div style="margin-bottom:15px;">
+                <label>Moneda</label>
+                {{ form.currency_id }}
+            </div>
 
-            <label>Monto</label>
-            {{ form.importe }}
+            <div style="margin-bottom:15px;">
+                <label>Monto</label>
+                {{ form.importe }}
 
-            {% if form.importe.errors %}
-                <div style="color:red;">
-                    {{ form.importe.errors }}
-                </div>
-            {% endif %}
+                {% if form.importe.errors %}
+                    <div style="color:red;">
+                        {{ form.importe.errors }}
+                    </div>
+                {% endif %}
+            </div>
 
             <button type="submit" style="
                 width:100%;
@@ -43,15 +51,13 @@
                 border-radius:10px;
                 font-weight:bold;
                 cursor:pointer;
-                margin-top:15px;
             ">
                 Enviar
             </button>
+
         </form>
 
-        <a href="{% url 'transaccion_list' %}" style="display:block; margin-top:15px;">
-            ← Volver
-        </a>
+        <a href="{% url 'transaccion_list' %}" class="back-btn">← Volver</a>
 
     </div>
 </div>

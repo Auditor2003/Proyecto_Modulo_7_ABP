@@ -10,7 +10,15 @@
         <form method="post">
             {% csrf_token %}
 
-            {{ form.as_p }}
+            <div style="margin-bottom:15px;">
+                <label>Usuario</label>
+                {{ form.usuario }}
+            </div>
+
+            <div style="margin-bottom:15px;">
+                <label>Monto a depositar</label>
+                {{ form.monto }}
+            </div>
 
             <button type="submit" style="
                 width:100%;
@@ -21,15 +29,13 @@
                 border-radius:10px;
                 font-weight:bold;
                 cursor:pointer;
-                margin-top:10px;
             ">
                 Depositar
             </button>
+
         </form>
 
-        <a href="{% url 'usuario_list' %}" style="display:block; margin-top:15px;">
-            ← Volver
-        </a>
+        <a href="{% url 'usuario_list' %}" class="back-btn">← Volver</a>
 
     </div>
 </div>

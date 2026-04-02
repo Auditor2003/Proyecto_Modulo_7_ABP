@@ -33,6 +33,7 @@ nav {
     gap:10px;
 }
 
+/* BOTONES NAV */
 .nav-btn {
     background:transparent;
     color:white;
@@ -60,6 +61,7 @@ nav {
     color:white;
 }
 
+/* LOGOUT */
 .logout-btn {
     background:#ff4d4d;
     border:none;
@@ -73,12 +75,13 @@ nav {
     background:#cc0000;
 }
 
+/* USER */
 .user {
     color:white;
     font-size:14px;
 }
 
-/* MENSAJES */
+/* ALERTAS */
 .alert {
     margin-bottom:15px;
     padding:12px;
@@ -105,8 +108,11 @@ nav {
 }
 
 /* CONTENIDO */
-.container { padding:20px; }
+.container {
+    padding:20px;
+}
 
+/* CARDS */
 .card {
     background:white;
     padding:20px;
@@ -118,6 +124,45 @@ nav {
 .card:hover {
     transform:translateY(-5px);
 }
+
+/* FORMULARIOS */
+input, select {
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    margin-top:5px;
+    box-sizing:border-box;
+}
+
+label {
+    font-weight:500;
+    display:block;
+    margin-bottom:5px;
+}
+
+input:focus, select:focus {
+    outline:none;
+    border:1px solid #2ec4ff;
+    box-shadow:0 0 5px rgba(46,196,255,0.5);
+}
+
+/* BOTÓN VOLVER */
+.back-btn {
+    display:inline-block;
+    margin-top:15px;
+    padding:8px 14px;
+    background:#6c757d;
+    color:white;
+    border-radius:8px;
+    text-decoration:none;
+    font-size:14px;
+    transition:0.2s;
+}
+
+.back-btn:hover {
+    background:#5a6268;
+}
 </style>
 
 </head>
@@ -125,15 +170,19 @@ nav {
 <body>
 
 <nav>
+
 <div class="nav-left">
     <span class="logo">Alke Wallet</span>
+
     <a href="{% url 'home' %}" class="nav-btn">Inicio</a>
     <a href="{% url 'transaccion_create' %}" class="nav-btn primary">Enviar</a>
     <a href="{% url 'deposito_create' %}" class="nav-btn">Depositar</a>
 </div>
 
 <div class="nav-right">
+
 {% if user.is_authenticated %}
+
     <span class="user">{{ user.username }}</span>
 
     <a href="{% url 'beneficiario_list' %}" class="nav-btn">Beneficiarios</a>
@@ -144,11 +193,16 @@ nav {
         {% csrf_token %}
         <button type="submit" class="logout-btn">Salir</button>
     </form>
+
 {% else %}
+
     <a href="{% url 'login' %}" class="nav-btn">Iniciar sesión</a>
     <a href="{% url 'register' %}" class="nav-btn primary">Registrarse</a>
+
 {% endif %}
+
 </div>
+
 </nav>
 
 <div class="container">
